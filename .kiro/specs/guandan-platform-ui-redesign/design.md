@@ -1070,19 +1070,19 @@ export function useRankings() {
 
 *For any* nearby merchant query result, all returned merchants SHALL be within the specified radius from the query center AND ordered by distance ascending.
 
-**Validates: Requirement 3.4**
+**Validates: Requirements 3.4**
 
 ### Property 5: ELO 零和性
 
 *For any* completed four-player match, the sum of all players' score deltas SHALL be zero (within rounding tolerance of ±4).
 
-**Validates: Requirement 8.2**
+**Validates: Requirements 8.2**
 
 ### Property 6: 订单过期不可支付
 
 *For any* payment order where the current time exceeds expiresAt, the system SHALL reject payment attempts and the order SHALL NOT transition to 'paid' status.
 
-**Validates: Requirement 6.9**
+**Validates: Requirements 6.9**
 
 ### Property 7: 俱乐部成员数一致性
 
