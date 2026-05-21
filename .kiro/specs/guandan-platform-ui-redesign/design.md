@@ -1142,13 +1142,13 @@ export function useRankings() {
 
 *For any* rich-text input containing script tags, event handlers, or other XSS vectors, the content filter SHALL remove or escape all dangerous elements while preserving safe content.
 
-**Validates: Requirement 15.5**
+**Validates: Requirements 15.5**
 
 ### Property 17: WebSocket 重连退避
 
 *For any* reconnection attempt number n, the retry delay SHALL equal min(2^(n-1) × 1000ms, 30000ms), following exponential backoff with a 30-second cap.
 
-**Validates: Requirement 10.3**
+**Validates: Requirements 10.3**
 
 ### Property 18: 俱乐部名称验证
 
