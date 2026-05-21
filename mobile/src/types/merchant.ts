@@ -34,3 +34,26 @@ export interface DiningPackage {
   sold_count: number
   status: 'active' | 'offline' | 'soldout'
 }
+
+/** 商户详情扩展接口 */
+export interface MerchantDetail extends Merchant {
+  photos: string[]
+  businessHours: string
+  phone: string
+  packages: DiningPackage[]
+  /** 商务约局容纳人数 */
+  businessMatchCapacity: number
+  /** 餐饮约局容纳人数 */
+  diningMatchCapacity: number
+  /** 评价数量 */
+  reviewCount: number
+  /** 平均评分 */
+  avgScore: number
+}
+
+/** 商户分类 */
+export interface MerchantCategory {
+  key: 'all' | 'dining' | 'teahouse' | 'chess'
+  label: string
+  icon: string
+}

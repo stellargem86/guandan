@@ -26,7 +26,7 @@
     - 创建 `mobile/src/components/ui/GdBadge.vue` 徽章/数字角标组件
     - _Requirements: 14.2, 14.3_
 
-  - [~] 1.3 创建 TypeScript 类型定义
+  - [-] 1.3 创建 TypeScript 类型定义
     - 更新 `mobile/src/types/merchant.ts` 添加 MerchantDetail、MerchantCategory、DiningPackage 扩展接口
     - 更新 `mobile/src/types/event.ts` 添加 EventDetail、PrizeSetting、EventSchedule 扩展接口
     - 创建 `mobile/src/types/news.ts` 定义 Article、ArticleComment 接口
