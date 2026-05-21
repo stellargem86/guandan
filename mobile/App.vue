@@ -1,3 +1,7 @@
+<template>
+  <router-view />
+</template>
+
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
 
@@ -24,19 +28,16 @@ page {
   min-height: 100vh;
 }
 
-/* 全局滚动条 (H5) */
 ::-webkit-scrollbar {
   width: 0;
   height: 0;
 }
 
-/* uni-app 组件主题覆盖 */
 uni-view,
 uni-text {
   color: #333333;
 }
 
-/* 卡片基础样式 */
 .card {
   background-color: #FFFFFF;
   border-radius: 16rpx;
@@ -44,12 +45,10 @@ uni-text {
   box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
 }
 
-/* 红色高亮文字 */
 .text-red {
   color: #C41E3A;
 }
 
-/* 红色渐变按钮 */
 .btn-red {
   background: linear-gradient(135deg, #C41E3A 0%, #E8354A 100%);
   color: #FFFFFF;
@@ -59,12 +58,6 @@ uni-text {
   text-align: center;
 }
 
-.btn-red:active {
-  opacity: 0.85;
-  transform: scale(0.98);
-}
-
-/* 描边按钮 */
 .btn-outline-red {
   border: 1px solid #C41E3A;
   color: #C41E3A;
@@ -74,7 +67,6 @@ uni-text {
   background-color: transparent;
 }
 
-/* 分割线 */
 .divider {
   height: 1rpx;
   background-color: #EEEEEE;
