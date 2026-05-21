@@ -1,0 +1,48 @@
+// ============================================================
+// Design Token Variables - 设计令牌 Sass 变量
+// 与 tokens.ts 保持同步，供 SCSS 文件直接使用
+// ============================================================
+
+// --- Colors 颜色 ---
+$color-primary: #C41E3A;
+$color-primary-dark: #9B1830;
+$color-primary-light: #E8354F;
+$color-gold: #D4A843;
+$color-gold-light: #F0D68A;
+$color-background: #F5F5F5;
+$color-surface: #FFFFFF;
+$color-text-primary: #1A1A1A;
+$color-text-secondary: #666666;
+$color-text-tertiary: #999999;
+$color-border: #EEEEEE;
+$color-success: #52C41A;
+$color-warning: #FAAD14;
+$color-error: #FF4D4F;
+
+// --- Spacing 间距 ---
+$spacing-xs: 8rpx;
+$spacing-sm: 16rpx;
+$spacing-md: 24rpx;
+$spacing-lg: 32rpx;
+$spacing-xl: 48rpx;
+
+// --- Border Radius 圆角 ---
+$radius-sm: 8rpx;
+$radius-md: 16rpx;
+$radius-lg: 24rpx;
+$radius-xl: 32rpx;
+$radius-full: 9999rpx;
+
+// --- Font Size 字号 ---
+$font-size-xs: 20rpx;
+$font-size-sm: 24rpx;
+$font-size-base: 28rpx;
+$font-size-md: 32rpx;
+$font-size-lg: 36rpx;
+$font-size-xl: 40rpx;
+$font-size-2xl: 48rpx;
+
+// --- Shadows 阴影 ---
+$shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+$shadow-md: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+$shadow-lg: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
