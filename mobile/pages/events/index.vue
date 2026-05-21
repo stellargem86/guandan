@@ -1,56 +1,51 @@
 <template>
   <view class="page">
-    <!-- 分类标签 -->
-    <view class="category-tabs">
+    <!-- 顶部标签栏 -->
+    <view class="top-tabs">
       <view
-        class="cat-tab"
-        :class="{ active: activeCategory === cat.value }"
-        v-for="cat in categories"
-        :key="cat.value"
-        @tap="activeCategory = cat.value"
+        class="top-tab"
+        :class="{ active: activeStatus === s.value }"
+        v-for="s in statusTabs"
+        :key="s.value"
+        @tap="activeStatus = s.value"
       >
-        <text class="cat-tab-text" :class="{ active: activeCategory === cat.value }">{{ cat.label }}</text>
+        <text class="top-tab-text" :class="{ active: activeStatus === s.value }">{{ s.label }}</text>
       </view>
-    </view>
-
-    <!-- 排行榜入口 -->
-    <view class="ranking-entry" @tap="goRankings">
-      <view class="ranking-left">
-        <text class="ranking-icon">🏅</text>
-        <text class="ranking-text">天梯排行榜</text>
-      </view>
-      <text class="ranking-arrow">查看 ›</text>
     </view>
 
     <!-- 赛事列表 -->
-    <scroll-view scroll-y class="event-list">
+    <scroll-view scroll-y class="event-scroll">
       <view class="event-card" v-for="event in filteredEvents" :key="event.id" @tap="goDetail(event.id)">
-        <view class="event-cover">
-          <text class="event-cover-emoji">{{ event.emoji }}</text>
-          <view class="event-status-badge" :class="event.statusClass">
-            <text class="event-status-text">{{ event.status }}</text>
+        <view class="event-header">
+          <text class="event-title">{{ event.title }}</text>
+          <view class="event-status" :class="event.statusClass">
+            <text class="status-text">{{ event.statusLabel }}</text>
           </view>
         </view>
-        <view class="event-info">
-          <text class="event-title">{{ event.title }}</text>
-          <view class="event-meta">
-            <view class="meta-item">
-              <text class="meta-icon">📅</text>
-              <text class="meta-text">{{ event.date }}</text>
-            </view>
-            <view class="meta-item">
-              <text class="meta-icon">📍</text>
-              <text class="meta-text">{{ event.location }}</text>
-            </view>
+        <view class="event-info-list">
+          <view class="event-info-row">
+            <text class="info-icon">📅</text>
+            <text class="info-text">{{ event.date }}</text>
           </view>
-          <view class="event-bottom">
-            <view class="event-stats">
-              <text class="event-fee">¥{{ event.fee }}</text>
-              <text class="event-capacity">{{ event.enrolled }}/{{ event.capacity }}人</text>
-            </view>
-            <view class="event-btn" v-if="event.status === '报名中'" @tap.stop="handleEnroll(event)">
-              <text class="event-btn-text">立即报名</text>
-            </view>
+          <view class="event-info-row">
+            <text class="info-icon">📍</text>
+            <text class="info-text">{{ event.location }}</text>
+          </view>
+          <view class="event-info-row">
+            <text class="info-icon">💰</text>
+            <text class="info-text">奖金: ¥{{ event.prize }}</text>
+          </view>
+        </view>
+        <view class="event-footer">
+          <view class="event-fee-info">
+            <text class="event-fee">¥{{ event.fee }}</text>
+            <text class="event-capacity">{{ event.enrolled }}/{{ event.capacity }}人</text>
+          </view>
+          <view class="enroll-btn" v-if="event.status === 'enrolling'" @tap.stop="handleEnroll(event)">
+            <text class="enroll-btn-text">立即报名</text>
+          </view>
+          <view class="view-btn" v-else @tap.stop="goDetail(event.id)">
+            <text class="view-btn-text">查看详情</text>
           </view>
         </view>
       </view>
@@ -61,296 +56,247 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 
-const activeCategory = ref('all')
+const activeStatus = ref('all')
 
-const categories = [
+const statusTabs = [
   { label: '全部', value: 'all' },
-  { label: '官方赛事', value: 'official' },
-  { label: '商会赛事', value: 'business' },
-  { label: '俱乐部赛事', value: 'club' },
+  { label: '报名中', value: 'enrolling' },
+  { label: '进行中', value: 'ongoing' },
+  { label: '已结束', value: 'finished' },
 ]
 
 const events = ref([
   {
     id: '1',
-    title: '深掼会·2024南京城市精英赛',
-    emoji: '🏆',
-    date: '2024-03-15 09:00',
-    location: '南京奥体中心',
+    title: '南京市掼蛋公开赛',
+    date: '2024-06-01 09:00',
+    location: '南京国际博览中心',
+    prize: 10000,
     fee: 200,
-    enrolled: 198,
+    enrolled: 128,
     capacity: 256,
-    status: '报名中',
+    status: 'enrolling',
+    statusLabel: '报名中',
     statusClass: 'enrolling',
-    category: 'official',
   },
   {
     id: '2',
-    title: '江苏省企业家掼蛋邀请赛',
-    emoji: '🎖️',
-    date: '2024-03-20 14:00',
-    location: '金陵饭店·宴会厅',
-    fee: 500,
+    title: '长三角掼蛋省赛事',
+    date: '2024-06-15 09:00',
+    location: '上海某某酒店',
+    prize: 20000,
+    fee: 300,
     enrolled: 64,
     capacity: 128,
-    status: '报名中',
+    status: 'enrolling',
+    statusLabel: '报名中',
     statusClass: 'enrolling',
-    category: 'business',
   },
   {
     id: '3',
-    title: '龙虎山俱乐部月度积分赛',
-    emoji: '⚡',
-    date: '2024-03-10 19:00',
-    location: '龙虎山茶馆·赛事厅',
-    fee: 50,
+    title: '企业家掼蛋交流赛',
+    date: '2024-05-28 14:00',
+    location: '高新掼蛋俱乐部3楼',
+    prize: 5000,
+    fee: 500,
     enrolled: 32,
     capacity: 32,
-    status: '进行中',
+    status: 'ongoing',
+    statusLabel: '进行中',
     statusClass: 'ongoing',
-    category: 'club',
   },
   {
     id: '4',
-    title: '深掼会·新手入门友谊赛',
-    emoji: '🌟',
-    date: '2024-03-08 14:00',
-    location: '紫金阁精品牌室',
-    fee: 0,
-    enrolled: 24,
-    capacity: 24,
-    status: '已结束',
-    statusClass: 'finished',
-    category: 'official',
-  },
-  {
-    id: '5',
-    title: '金融行业精英对抗赛',
-    emoji: '💰',
-    date: '2024-03-25 10:00',
-    location: '南京国际会议中心',
-    fee: 300,
-    enrolled: 56,
+    title: '春季友谊赛',
+    date: '2024-05-10 09:00',
+    location: '江宁文体中心',
+    prize: 3000,
+    fee: 100,
+    enrolled: 64,
     capacity: 64,
-    status: '报名中',
-    statusClass: 'enrolling',
-    category: 'business',
+    status: 'finished',
+    statusLabel: '已结束',
+    statusClass: 'finished',
   },
 ])
 
 const filteredEvents = computed(() => {
-  if (activeCategory.value === 'all') return events.value
-  return events.value.filter((e) => e.category === activeCategory.value)
+  if (activeStatus.value === 'all') return events.value
+  return events.value.filter(e => e.status === activeStatus.value)
 })
 
 function goDetail(id: string) {
   uni.navigateTo({ url: `/pages/events/detail?id=${id}` })
 }
 
-function goRankings() {
-  uni.navigateTo({ url: '/pages/events/rankings' })
-}
-
 function handleEnroll(event: any) {
-  uni.showToast({ title: `已报名「${event.title}」`, icon: 'none' })
+  uni.navigateTo({ url: `/pages/events/payment?id=${event.id}` })
 }
 </script>
 
 <style scoped>
 .page {
   min-height: 100vh;
-  background-color: #1a1a2e;
+  background-color: #F5F5F5;
   padding-bottom: 120rpx;
 }
 
-.category-tabs {
+/* 顶部标签 */
+.top-tabs {
   display: flex;
-  padding: 24rpx 32rpx;
-  gap: 16rpx;
-  overflow-x: auto;
+  background-color: #FFFFFF;
+  padding: 16rpx 24rpx;
+  gap: 24rpx;
+  border-bottom: 1rpx solid #F0F0F0;
 }
 
-.cat-tab {
-  padding: 14rpx 28rpx;
-  border-radius: 32rpx;
-  background-color: #2a2a3e;
-  white-space: nowrap;
-  flex-shrink: 0;
+.top-tab {
+  padding: 8rpx 0;
 }
 
-.cat-tab.active {
-  background: linear-gradient(135deg, #f6c342 0%, #d4a537 100%);
+.top-tab.active {
+  border-bottom: 4rpx solid #C41E3A;
 }
 
-.cat-tab-text {
-  font-size: 26rpx;
-  color: #b0b0c0;
+.top-tab-text {
+  font-size: 28rpx;
+  color: #999999;
 }
 
-.cat-tab-text.active {
-  color: #1a1a2e;
+.top-tab-text.active {
+  color: #C41E3A;
   font-weight: 600;
 }
 
-/* 排行榜入口 */
-.ranking-entry {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0 32rpx 24rpx;
-  padding: 24rpx;
-  background: linear-gradient(135deg, rgba(246, 195, 66, 0.08) 0%, rgba(246, 195, 66, 0.03) 100%);
-  border-radius: 16rpx;
-  border: 1rpx solid rgba(246, 195, 66, 0.15);
-}
-
-.ranking-left {
-  display: flex;
-  align-items: center;
-  gap: 12rpx;
-}
-
-.ranking-icon {
-  font-size: 32rpx;
-}
-
-.ranking-text {
-  font-size: 28rpx;
-  color: #f6c342;
-  font-weight: 500;
-}
-
-.ranking-arrow {
-  font-size: 24rpx;
-  color: #f6c342;
-}
-
 /* 赛事列表 */
-.event-list {
-  padding: 0 32rpx;
-  height: calc(100vh - 260rpx);
+.event-scroll {
+  height: calc(100vh - 120rpx);
+  padding: 16rpx 24rpx;
 }
 
 .event-card {
-  background-color: #2a2a3e;
-  border-radius: 24rpx;
-  overflow: hidden;
-  margin-bottom: 24rpx;
-}
-
-.event-cover {
-  height: 200rpx;
-  background: linear-gradient(135deg, #32324a 0%, #1e1e32 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.event-cover-emoji {
-  font-size: 80rpx;
-}
-
-.event-status-badge {
-  position: absolute;
-  top: 16rpx;
-  right: 16rpx;
-  padding: 6rpx 16rpx;
-  border-radius: 8rpx;
-}
-
-.event-status-badge.enrolling {
-  background-color: rgba(16, 185, 129, 0.15);
-}
-
-.event-status-badge.ongoing {
-  background-color: rgba(59, 130, 246, 0.15);
-}
-
-.event-status-badge.finished {
-  background-color: rgba(107, 107, 128, 0.15);
-}
-
-.event-status-text {
-  font-size: 22rpx;
-  color: #10b981;
-}
-
-.event-status-badge.ongoing .event-status-text {
-  color: #3b82f6;
-}
-
-.event-status-badge.finished .event-status-text {
-  color: #6b6b80;
-}
-
-.event-info {
+  background-color: #FFFFFF;
+  border-radius: 16rpx;
   padding: 24rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.event-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
 }
 
 .event-title {
   font-size: 30rpx;
   font-weight: 600;
-  color: #f5f5f5;
-  margin-bottom: 16rpx;
+  color: #333333;
+  flex: 1;
+  margin-right: 16rpx;
 }
 
-.event-meta {
+.event-status {
+  padding: 4rpx 16rpx;
+  border-radius: 6rpx;
+  flex-shrink: 0;
+}
+
+.event-status.enrolling {
+  background-color: #E8F5E9;
+}
+
+.event-status.ongoing {
+  background-color: #E3F2FD;
+}
+
+.event-status.finished {
+  background-color: #F5F5F5;
+}
+
+.status-text {
+  font-size: 22rpx;
+  color: #4CAF50;
+}
+
+.event-status.ongoing .status-text {
+  color: #2196F3;
+}
+
+.event-status.finished .status-text {
+  color: #999999;
+}
+
+/* 赛事信息 */
+.event-info-list {
   display: flex;
   flex-direction: column;
-  gap: 8rpx;
+  gap: 10rpx;
   margin-bottom: 16rpx;
 }
 
-.meta-item {
+.event-info-row {
   display: flex;
   align-items: center;
   gap: 8rpx;
 }
 
-.meta-icon {
-  font-size: 22rpx;
-}
-
-.meta-text {
+.info-icon {
   font-size: 24rpx;
-  color: #b0b0c0;
 }
 
-.event-bottom {
+.info-text {
+  font-size: 26rpx;
+  color: #666666;
+}
+
+/* 赛事底部 */
+.event-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-top: 16rpx;
-  border-top: 1rpx solid #3a3a50;
+  border-top: 1rpx solid #F0F0F0;
 }
 
-.event-stats {
+.event-fee-info {
   display: flex;
   align-items: baseline;
-  gap: 16rpx;
+  gap: 12rpx;
 }
 
 .event-fee {
   font-size: 32rpx;
   font-weight: 700;
-  color: #f6c342;
+  color: #C41E3A;
 }
 
 .event-capacity {
   font-size: 24rpx;
-  color: #6b6b80;
+  color: #999999;
 }
 
-.event-btn {
-  background: linear-gradient(135deg, #f6c342 0%, #d4a537 100%);
-  border-radius: 12rpx;
-  padding: 14rpx 28rpx;
+.enroll-btn {
+  background-color: #C41E3A;
+  border-radius: 24rpx;
+  padding: 12rpx 32rpx;
 }
 
-.event-btn-text {
-  font-size: 24rpx;
-  color: #1a1a2e;
-  font-weight: 600;
+.enroll-btn-text {
+  font-size: 26rpx;
+  color: #FFFFFF;
+  font-weight: 500;
+}
+
+.view-btn {
+  border: 1rpx solid #C41E3A;
+  border-radius: 24rpx;
+  padding: 12rpx 32rpx;
+}
+
+.view-btn-text {
+  font-size: 26rpx;
+  color: #C41E3A;
 }
 </style>
