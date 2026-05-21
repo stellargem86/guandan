@@ -1052,7 +1052,7 @@ export function useRankings() {
 
 *For any* event, the currentParticipants count SHALL equal the number of registrations with status 'registered' or 'checked_in' for that event.
 
-**Validates: Requirements 6.6, 9.4**
+**Validates: Requirements 6.5, 9.4**
 
 ### Property 2: 支付金额正确性
 
@@ -1094,7 +1094,7 @@ export function useRankings() {
 
 *For any* post creation request, content length outside [1, 2000] characters SHALL be rejected, and image count exceeding 9 SHALL be rejected.
 
-**Validates: Requirements 2.4, 2.5**
+**Validates: Requirements 2.4, 2.5, 2.6**
 
 ### Property 9: 商户评分范围
 
@@ -1106,7 +1106,7 @@ export function useRankings() {
 
 *For any* filtered data list (merchants by category, events by status tab, rankings by level, articles by category), all items in the result SHALL match the selected filter criteria.
 
-**Validates: Requirements 3.2, 5.2, 7.2, 11.2**
+**Validates: Requirements 3.5, 5.2, 7.2, 7.6, 11.2**
 
 ### Property 11: ELO 单调性
 
@@ -1130,7 +1130,7 @@ export function useRankings() {
 
 *For any* payment callback processed multiple times with the same transaction ID, the system SHALL produce the same final state as processing it once (no duplicate participant count increments or duplicate order status changes).
 
-**Validates: Requirement 15.7**
+**Validates: Requirements 6.10, 15.7**
 
 ### Property 15: 手机号脱敏
 
@@ -1154,7 +1154,7 @@ export function useRankings() {
 
 *For any* club creation request, the club name length SHALL be between 2 and 20 characters. Names outside this range SHALL be rejected.
 
-**Validates: Requirement 9.1**
+**Validates: Requirements 9.1, 9.2**
 
 ### Property 19: RBAC 权限隔离
 
