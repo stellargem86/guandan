@@ -1,102 +1,112 @@
 <template>
   <view class="page">
-    <!-- 顶部标题区 -->
-    <view class="header">
-      <view class="header-title">
-        <text class="title">掼友圈</text>
-        <text class="subtitle">同城掼蛋 约局交友</text>
+    <!-- 顶部搜索栏 -->
+    <view class="header-bar">
+      <view class="search-bar">
+        <text class="search-icon">🔍</text>
+        <input class="search-input" placeholder="搜索掼友、牌局、商户" placeholder-class="placeholder" />
       </view>
-      <view class="header-action" @tap="goCreatePost">
-        <text class="action-icon">✏️</text>
-      </view>
-    </view>
-
-    <!-- 快捷功能入口 -->
-    <view class="quick-actions">
-      <view class="action-item" @tap="goMap">
-        <view class="action-icon-wrap">
-          <text class="action-emoji">📍</text>
-        </view>
-        <text class="action-label">地图找局</text>
-      </view>
-      <view class="action-item" @tap="goMatchmaking">
-        <view class="action-icon-wrap">
-          <text class="action-emoji">🎯</text>
-        </view>
-        <text class="action-label">一键组局</text>
-      </view>
-      <view class="action-item" @tap="goNetwork">
-        <view class="action-icon-wrap">
-          <text class="action-emoji">🤝</text>
-        </view>
-        <text class="action-label">商务人脉</text>
-      </view>
-      <view class="action-item" @tap="goEvents">
-        <view class="action-icon-wrap">
-          <text class="action-emoji">🔥</text>
-        </view>
-        <text class="action-label">热门活动</text>
+      <view class="location-btn">
+        <text class="location-icon">📍</text>
+        <text class="location-text">南京市</text>
       </view>
     </view>
 
-    <!-- 热门牌场 -->
-    <view class="section-header">
-      <text class="section-title">热门牌场</text>
-      <text class="section-more" @tap="goMap">查看全部 ›</text>
+    <!-- 分类标签 -->
+    <view class="category-tabs">
+      <view
+        class="cat-tab"
+        :class="{ active: activeTab === tab.value }"
+        v-for="tab in tabs"
+        :key="tab.value"
+        @tap="activeTab = tab.value"
+      >
+        <text class="cat-tab-text" :class="{ active: activeTab === tab.value }">{{ tab.label }}</text>
+      </view>
     </view>
 
-    <scroll-view scroll-x class="venue-scroll">
-      <view class="venue-list">
-        <view class="venue-card" v-for="venue in venues" :key="venue.id" @tap="goMerchantDetail(venue.id)">
-          <view class="venue-cover">
-            <text class="venue-cover-text">{{ venue.coverEmoji }}</text>
+    <scroll-view scroll-y class="content-scroll" @scrolltolower="loadMore">
+      <!-- 热门约局 Section -->
+      <view class="section" v-if="activeTab === 'all' || activeTab === 'match'">
+        <view class="section-header">
+          <text class="section-title">热门约局</text>
+          <text class="section-more" @tap="goMatchmaking">更多 ></text>
+        </view>
+        <view class="match-list">
+          <view class="match-card" v-for="match in hotMatches" :key="match.id" @tap="goMatchDetail(match.id)">
+            <view class="match-info">
+              <text class="match-title">{{ match.title }}</text>
+              <view class="match-meta">
+                <text class="match-time">🕐 {{ match.time }}</text>
+                <text class="match-location">📍 {{ match.location }}</text>
+              </view>
+            </view>
+            <view class="match-join-btn" @tap.stop="handleJoinMatch(match)">
+              <text class="join-btn-text">加入</text>
+            </view>
           </view>
-          <text class="venue-name">{{ venue.name }}</text>
-          <view class="venue-info">
-            <text class="venue-rating">⭐ {{ venue.rating }}</text>
-            <text class="venue-distance">{{ venue.distance }}</text>
+        </view>
+      </view>
+
+      <!-- 帖子动态列表 -->
+      <view class="section">
+        <view class="section-header">
+          <view class="feed-tabs">
+            <text class="feed-tab" :class="{ active: feedTab === 'latest' }" @tap="feedTab = 'latest'">最新动态</text>
+            <text class="feed-tab" :class="{ active: feedTab === 'friends' }" @tap="feedTab = 'friends'">好友动态</text>
+            <text class="feed-tab" :class="{ active: feedTab === 'recommend' }" @tap="feedTab = 'recommend'">商家推荐</text>
+          </view>
+        </view>
+
+        <view class="post-list">
+          <view class="post-card" v-for="post in posts" :key="post.id" @tap="goPostDetail(post.id)">
+            <view class="post-header">
+              <image v-if="post.avatar" :src="post.avatar" class="post-avatar" mode="aspectFill" />
+              <view v-else class="post-avatar post-avatar-placeholder">
+                <text class="avatar-char">{{ post.nickname.charAt(0) }}</text>
+              </view>
+              <view class="post-user">
+                <view class="post-name-row">
+                  <text class="post-nickname">{{ post.nickname }}</text>
+                  <view class="post-badge" v-if="post.badge">
+                    <text class="badge-text">{{ post.badge }}</text>
+                  </view>
+                </view>
+                <text class="post-time">{{ post.time }}</text>
+              </view>
+            </view>
+            <text class="post-content">{{ post.content }}</text>
+            <view class="post-images" v-if="post.images && post.images.length > 0">
+              <image
+                v-for="(img, idx) in post.images"
+                :key="idx"
+                :src="img"
+                class="post-img"
+                mode="aspectFill"
+              />
+            </view>
+            <view class="post-footer">
+              <view class="post-action">
+                <text class="action-icon">👍</text>
+                <text class="action-num">{{ post.likes }}</text>
+              </view>
+              <view class="post-action">
+                <text class="action-icon">💬</text>
+                <text class="action-num">{{ post.comments }}</text>
+              </view>
+              <view class="post-action">
+                <text class="action-icon">↗️</text>
+                <text class="action-num">{{ post.shares }}</text>
+              </view>
+            </view>
           </view>
         </view>
       </view>
     </scroll-view>
 
-    <!-- Feed帖子列表 -->
-    <view class="section-header">
-      <text class="section-title">掼友动态</text>
-    </view>
-
-    <view class="feed-list">
-      <view class="post-card" v-for="post in posts" :key="post.id" @tap="goPostDetail(post.id)">
-        <view class="post-header">
-          <view class="post-avatar">
-            <text class="avatar-text">{{ post.avatar }}</text>
-          </view>
-          <view class="post-user-info">
-            <text class="post-nickname">{{ post.nickname }}</text>
-            <text class="post-time">{{ post.time }}</text>
-          </view>
-          <view class="post-tag" v-if="post.tag">
-            <text class="post-tag-text">{{ post.tag }}</text>
-          </view>
-        </view>
-        <text class="post-content">{{ post.content }}</text>
-        <view class="post-images" v-if="post.images && post.images.length">
-          <view class="post-image" v-for="(img, idx) in post.images" :key="idx">
-            <text class="img-placeholder">{{ img }}</text>
-          </view>
-        </view>
-        <view class="post-footer">
-          <view class="post-action">
-            <text class="action-text">👍 {{ post.likes }}</text>
-          </view>
-          <view class="post-action">
-            <text class="action-text">💬 {{ post.comments }}</text>
-          </view>
-          <view class="post-action">
-            <text class="action-text">🔄 {{ post.shares }}</text>
-          </view>
-        </view>
-      </view>
+    <!-- 发帖浮动按钮 -->
+    <view class="fab-btn" @tap="goCreatePost">
+      <text class="fab-icon">✏️</text>
     </view>
   </view>
 </template>
@@ -104,263 +114,294 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const venues = ref([
-  { id: '1', name: '金陵棋牌会所', rating: '4.9', distance: '1.2km', coverEmoji: '🏆' },
-  { id: '2', name: '龙虎山茶馆', rating: '4.8', distance: '2.0km', coverEmoji: '🍵' },
-  { id: '3', name: '紫金阁牌室', rating: '4.7', distance: '3.5km', coverEmoji: '🎴' },
-  { id: '4', name: '秦淮雅集', rating: '4.9', distance: '4.1km', coverEmoji: '🏮' },
+const activeTab = ref('all')
+const feedTab = ref('latest')
+
+const tabs = [
+  { label: '全部', value: 'all' },
+  { label: '官方×掼蛋', value: 'official' },
+  { label: '找人组局', value: 'match' },
+  { label: '赛事一手', value: 'event' },
+]
+
+const hotMatches = ref([
+  {
+    id: '1',
+    title: '南京3国际，3缺1',
+    time: '05-21 14:00',
+    location: '龙虎山茶馆',
+  },
+  {
+    id: '2',
+    title: '商务局，就差你了',
+    time: '05-21 19:30',
+    location: '五联发掼蛋室',
+  },
+  {
+    id: '3',
+    title: '掼蛋小王子约掼友',
+    time: '05-22 10:00',
+    location: '商家自荐享受',
+  },
 ])
 
 const posts = ref([
   {
     id: '1',
-    avatar: '张',
-    nickname: '张总·金融',
+    avatar: '',
+    nickname: '掼蛋小王子',
+    badge: 'A+',
     time: '10分钟前',
-    tag: '约局',
-    content: '今晚8点金陵棋牌会所，三缺一，段位A以上优先，结束后聚餐！有意者私信我，地址：建邺区奥体大街68号',
-    images: ['🃏', '🎴', '🀄'],
+    content: '周末有八个牌友一一结伴组三，全成掼蛋联盟的精英，谁来？',
+    images: [],
     likes: 28,
     comments: 12,
     shares: 3,
   },
   {
     id: '2',
-    avatar: '李',
-    nickname: '李总·科技',
+    avatar: '',
+    nickname: '张大师',
+    badge: '',
     time: '30分钟前',
-    tag: '战报',
-    content: '昨天深掼会月赛夺冠了！连续三局对A打满贯，ELO涨了45分到2780，感谢队友老王的完美配合🎉 下个月继续冲！',
-    images: ['🏆', '📊'],
+    content: '昨天深掼会月赛夺冠了！连续三局对A打满贯，ELO涨了45分到2780，感谢队友老王的完美配合🎉',
+    images: ['/static/demo/post1.jpg', '/static/demo/post2.jpg'],
     likes: 156,
     comments: 43,
     shares: 12,
   },
   {
     id: '3',
-    avatar: '王',
+    avatar: '',
     nickname: '王姐·教育',
+    badge: '',
     time: '2小时前',
-    tag: '心得',
-    content: '分享一个实战技巧：当手持双王+同花顺时，不要急于出牌，先观察对手出牌节奏。昨晚就是靠这个策略逆转了两局，段位从B+升到A-',
+    content: '分享一个实战技巧：当手持双王+同花顺时，不要急于出牌，先观察对手出牌节奏。昨晚靠这个策略逆转两局！',
     images: [],
     likes: 89,
     comments: 34,
     shares: 21,
   },
-  {
-    id: '4',
-    avatar: '陈',
-    nickname: '陈总·地产',
-    time: '3小时前',
-    tag: '推荐',
-    content: '强烈推荐紫金阁牌室！环境优雅，服务到位，茶水免费，还有专业的计分系统。老板是深掼会的会员，给咱们打8折💰',
-    images: ['📷', '📷', '📷'],
-    likes: 67,
-    comments: 18,
-    shares: 8,
-  },
 ])
-
-function goMap() {
-  uni.navigateTo({ url: '/pages/index/map' })
-}
 
 function goMatchmaking() {
   uni.navigateTo({ url: '/pages/index/matchmaking' })
 }
 
-function goNetwork() {
-  uni.showToast({ title: '商务人脉功能即将开放', icon: 'none' })
+function goMatchDetail(id: string) {
+  uni.navigateTo({ url: `/pages/index/matchmaking?id=${id}` })
 }
 
-function goEvents() {
-  uni.switchTab({ url: '/pages/events/index' })
+function handleJoinMatch(match: any) {
+  uni.showToast({ title: `已加入「${match.title}」`, icon: 'none' })
+}
+
+function goPostDetail(id: string) {
+  uni.navigateTo({ url: `/pages/index/post-detail?id=${id}` })
 }
 
 function goCreatePost() {
   uni.navigateTo({ url: '/pages/index/create-post' })
 }
 
-function goMerchantDetail(id: string) {
-  uni.navigateTo({ url: `/pages/index/merchant-detail?id=${id}` })
-}
-
-function goPostDetail(id: string) {
-  uni.navigateTo({ url: `/pages/index/post-detail?id=${id}` })
+function loadMore() {
+  // load more posts
 }
 </script>
 
 <style scoped>
 .page {
   min-height: 100vh;
-  background-color: #1a1a2e;
+  background-color: #F5F5F5;
   padding-bottom: 120rpx;
 }
 
-.header {
+/* 顶部搜索 */
+.header-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 32rpx 32rpx 16rpx;
+  padding: 16rpx 24rpx;
+  background-color: #FFFFFF;
+  gap: 16rpx;
 }
 
-.header-title {
-  display: flex;
-  flex-direction: column;
-}
-
-.title {
-  font-size: 44rpx;
-  font-weight: 700;
-  color: #f5f5f5;
-}
-
-.subtitle {
-  font-size: 24rpx;
-  color: #6b6b80;
-  margin-top: 4rpx;
-}
-
-.header-action {
-  width: 72rpx;
-  height: 72rpx;
-  background-color: #2a2a3e;
-  border-radius: 50%;
+.search-bar {
+  flex: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
-}
-
-.action-icon {
-  font-size: 32rpx;
-}
-
-/* 快捷功能入口 */
-.quick-actions {
-  display: flex;
-  justify-content: space-around;
-  padding: 24rpx 32rpx 32rpx;
-}
-
-.action-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background-color: #F5F5F5;
+  border-radius: 32rpx;
+  padding: 14rpx 24rpx;
   gap: 12rpx;
 }
 
-.action-icon-wrap {
-  width: 96rpx;
-  height: 96rpx;
-  background: linear-gradient(135deg, rgba(246, 195, 66, 0.15) 0%, rgba(212, 165, 55, 0.08) 100%);
-  border-radius: 24rpx;
+.search-icon {
+  font-size: 28rpx;
+}
+
+.search-input {
+  flex: 1;
+  font-size: 26rpx;
+  color: #333333;
+}
+
+.placeholder {
+  color: #999999;
+}
+
+.location-btn {
   display: flex;
   align-items: center;
-  justify-content: center;
-  border: 1rpx solid rgba(246, 195, 66, 0.2);
+  gap: 4rpx;
 }
 
-.action-emoji {
-  font-size: 40rpx;
+.location-icon {
+  font-size: 28rpx;
 }
 
-.action-label {
-  font-size: 22rpx;
-  color: #b0b0c0;
+.location-text {
+  font-size: 24rpx;
+  color: #333333;
 }
 
-/* 区域标题 */
+/* 分类标签 */
+.category-tabs {
+  display: flex;
+  padding: 16rpx 24rpx;
+  gap: 16rpx;
+  background-color: #FFFFFF;
+  overflow-x: auto;
+  border-bottom: 1rpx solid #F0F0F0;
+}
+
+.cat-tab {
+  padding: 10rpx 24rpx;
+  border-radius: 24rpx;
+  background-color: #F5F5F5;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.cat-tab.active {
+  background-color: #C41E3A;
+}
+
+.cat-tab-text {
+  font-size: 26rpx;
+  color: #666666;
+}
+
+.cat-tab-text.active {
+  color: #FFFFFF;
+  font-weight: 500;
+}
+
+/* 内容区 */
+.content-scroll {
+  height: calc(100vh - 240rpx);
+}
+
+.section {
+  margin-top: 16rpx;
+}
+
 .section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24rpx 32rpx 16rpx;
+  padding: 20rpx 24rpx 12rpx;
 }
 
 .section-title {
-  font-size: 32rpx;
+  font-size: 30rpx;
   font-weight: 600;
-  color: #f5f5f5;
+  color: #333333;
 }
 
 .section-more {
   font-size: 24rpx;
-  color: #f6c342;
+  color: #C41E3A;
 }
 
-/* 热门牌场横滑 */
-.venue-scroll {
-  white-space: nowrap;
-  padding-left: 32rpx;
+/* 热门约局 */
+.match-list {
+  padding: 0 24rpx;
 }
 
-.venue-list {
-  display: flex;
-  gap: 20rpx;
-  padding-right: 32rpx;
-}
-
-.venue-card {
-  display: inline-flex;
-  flex-direction: column;
-  width: 240rpx;
-  background-color: #2a2a3e;
-  border-radius: 20rpx;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.venue-cover {
-  width: 240rpx;
-  height: 160rpx;
-  background: linear-gradient(135deg, #32324a 0%, #2a2a3e 100%);
+.match-card {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  background-color: #FFFFFF;
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  margin-bottom: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
 }
 
-.venue-cover-text {
-  font-size: 56rpx;
+.match-info {
+  flex: 1;
 }
 
-.venue-name {
-  font-size: 24rpx;
+.match-title {
+  font-size: 28rpx;
   font-weight: 500;
-  color: #f5f5f5;
-  padding: 12rpx 16rpx 4rpx;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  color: #333333;
+  margin-bottom: 8rpx;
 }
 
-.venue-info {
+.match-meta {
   display: flex;
-  align-items: center;
-  gap: 12rpx;
-  padding: 4rpx 16rpx 16rpx;
+  gap: 16rpx;
 }
 
-.venue-rating {
-  font-size: 20rpx;
-  color: #f6c342;
+.match-time,
+.match-location {
+  font-size: 22rpx;
+  color: #999999;
 }
 
-.venue-distance {
-  font-size: 20rpx;
-  color: #6b6b80;
+.match-join-btn {
+  background-color: #C41E3A;
+  border-radius: 24rpx;
+  padding: 10rpx 28rpx;
 }
 
-/* 帖子Feed */
-.feed-list {
-  padding: 0 32rpx;
+.join-btn-text {
+  font-size: 24rpx;
+  color: #FFFFFF;
+  font-weight: 500;
+}
+
+/* Feed标签 */
+.feed-tabs {
+  display: flex;
+  gap: 32rpx;
+}
+
+.feed-tab {
+  font-size: 28rpx;
+  color: #999999;
+  padding-bottom: 8rpx;
+}
+
+.feed-tab.active {
+  color: #C41E3A;
+  font-weight: 600;
+  border-bottom: 4rpx solid #C41E3A;
+}
+
+/* 帖子列表 */
+.post-list {
+  padding: 0 24rpx;
 }
 
 .post-card {
-  background-color: #2a2a3e;
-  border-radius: 24rpx;
-  padding: 28rpx;
-  margin-bottom: 24rpx;
+  background-color: #FFFFFF;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
 }
 
 .post-header {
@@ -372,56 +413,62 @@ function goPostDetail(id: string) {
 .post-avatar {
   width: 72rpx;
   height: 72rpx;
-  background: linear-gradient(135deg, #f6c342 0%, #d4a537 100%);
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   margin-right: 16rpx;
 }
 
-.avatar-text {
-  font-size: 28rpx;
-  color: #1a1a2e;
-  font-weight: 700;
+.post-avatar-placeholder {
+  background-color: #C41E3A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.post-user-info {
+.avatar-char {
+  font-size: 28rpx;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.post-user {
   flex: 1;
+}
+
+.post-name-row {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
 }
 
 .post-nickname {
   font-size: 28rpx;
   font-weight: 600;
-  color: #f5f5f5;
+  color: #333333;
+}
+
+.post-badge {
+  background-color: #FFF0F0;
+  border-radius: 6rpx;
+  padding: 2rpx 10rpx;
+}
+
+.badge-text {
+  font-size: 20rpx;
+  color: #C41E3A;
+  font-weight: 500;
 }
 
 .post-time {
   font-size: 22rpx;
-  color: #6b6b80;
+  color: #999999;
   margin-top: 4rpx;
-}
-
-.post-tag {
-  background-color: rgba(246, 195, 66, 0.12);
-  border-radius: 8rpx;
-  padding: 6rpx 16rpx;
-}
-
-.post-tag-text {
-  font-size: 20rpx;
-  color: #f6c342;
 }
 
 .post-content {
   font-size: 28rpx;
-  color: #e0e0e8;
+  color: #333333;
   line-height: 1.6;
   margin-bottom: 16rpx;
-  white-space: normal;
-  word-break: break-all;
 }
 
 .post-images {
@@ -431,35 +478,52 @@ function goPostDetail(id: string) {
   flex-wrap: wrap;
 }
 
-.post-image {
-  width: 180rpx;
-  height: 180rpx;
-  background-color: #1e1e32;
-  border-radius: 12rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.img-placeholder {
-  font-size: 48rpx;
+.post-img {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 8rpx;
+  background-color: #F5F5F5;
 }
 
 .post-footer {
   display: flex;
   align-items: center;
-  gap: 40rpx;
+  gap: 48rpx;
   padding-top: 16rpx;
-  border-top: 1rpx solid #3a3a50;
+  border-top: 1rpx solid #F0F0F0;
 }
 
 .post-action {
   display: flex;
   align-items: center;
+  gap: 8rpx;
 }
 
-.action-text {
+.action-icon {
+  font-size: 28rpx;
+}
+
+.action-num {
   font-size: 24rpx;
-  color: #6b6b80;
+  color: #999999;
+}
+
+/* 浮动按钮 */
+.fab-btn {
+  position: fixed;
+  right: 32rpx;
+  bottom: 180rpx;
+  width: 96rpx;
+  height: 96rpx;
+  background-color: #C41E3A;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 24rpx rgba(196, 30, 58, 0.3);
+}
+
+.fab-icon {
+  font-size: 36rpx;
 }
 </style>
