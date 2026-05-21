@@ -4,55 +4,33 @@
     <view class="search-section">
       <view class="search-bar">
         <text class="search-icon">🔍</text>
-        <input
-          class="search-input"
-          placeholder="搜索俱乐部名称"
-          placeholder-class="search-placeholder"
-          v-model="searchText"
-        />
+        <input class="search-input" placeholder="搜索俱乐部名称" placeholder-class="placeholder" v-model="searchText" />
       </view>
     </view>
 
-    <!-- 快捷入口 -->
-    <view class="quick-entry">
-      <view class="entry-item" @tap="goMyClub">
-        <text class="entry-icon">🏠</text>
-        <text class="entry-text">我的俱乐部</text>
-      </view>
-      <view class="entry-item" @tap="goCreate">
-        <text class="entry-icon">➕</text>
-        <text class="entry-text">创建俱乐部</text>
-      </view>
-    </view>
-
-    <!-- 推荐俱乐部 -->
-    <view class="section-header">
-      <text class="section-title">推荐俱乐部</text>
-    </view>
-
-    <scroll-view scroll-y class="club-list">
+    <!-- 俱乐部列表 -->
+    <scroll-view scroll-y class="club-scroll">
       <view class="club-card" v-for="club in clubs" :key="club.id" @tap="goDetail(club.id)">
         <view class="club-avatar">
-          <text class="club-emoji">{{ club.emoji }}</text>
+          <image v-if="club.avatar" :src="club.avatar" class="avatar-img" mode="aspectFill" />
+          <view v-else class="avatar-placeholder">
+            <text class="avatar-text">{{ club.name.charAt(0) }}</text>
+          </view>
         </view>
         <view class="club-info">
           <view class="club-name-row">
             <text class="club-name">{{ club.name }}</text>
-            <view class="club-level" v-if="club.level">
-              <text class="level-text">{{ club.level }}</text>
+            <view class="club-tag" v-if="club.tag">
+              <text class="tag-text">{{ club.tag }}</text>
             </view>
           </view>
           <view class="club-meta">
-            <text class="meta-members">👥 {{ club.members }}/{{ club.maxMembers }}</text>
-            <text class="meta-region">📍 {{ club.region }}</text>
-          </view>
-          <view class="club-stats">
-            <text class="stat-item">ELO均分: {{ club.avgElo }}</text>
-            <text class="stat-item">活跃: {{ club.activeRate }}%</text>
+            <text class="meta-text">👥 {{ club.members }}/{{ club.maxMembers }}</text>
+            <text class="meta-text">📍 {{ club.region }}</text>
           </view>
         </view>
-        <view class="join-btn" @tap.stop="handleJoin(club)">
-          <text class="join-text">申请加入</text>
+        <view class="club-arrow">
+          <text class="arrow-icon">›</text>
         </view>
       </view>
     </scroll-view>
@@ -67,95 +45,66 @@ const searchText = ref('')
 const clubs = ref([
   {
     id: '1',
-    name: '金陵掼蛋俱乐部',
-    emoji: '🏆',
+    name: '南京掼蛋联盟',
+    avatar: '',
+    tag: '热门',
     members: 128,
     maxMembers: 200,
     region: '南京·建邺',
-    avgElo: 2680,
-    activeRate: 85,
-    level: '钻石',
   },
   {
     id: '2',
-    name: '龙虎山精英会',
-    emoji: '🐉',
+    name: '金陵掼蛋俱乐部',
+    avatar: '',
+    tag: '',
     members: 96,
     maxMembers: 150,
     region: '南京·鼓楼',
-    avgElo: 2520,
-    activeRate: 78,
-    level: '铂金',
   },
   {
     id: '3',
-    name: '紫金掼蛋社',
-    emoji: '💜',
+    name: '玄武湖掼蛋俱乐部',
+    avatar: '',
+    tag: '',
     members: 64,
     maxMembers: 100,
     region: '南京·玄武',
-    avgElo: 2350,
-    activeRate: 72,
-    level: '黄金',
   },
   {
     id: '4',
-    name: '秦淮商会牌友团',
-    emoji: '🏮',
+    name: '企业家掼蛋俱乐部',
+    avatar: '',
+    tag: '精英',
     members: 156,
     maxMembers: 200,
     region: '南京·秦淮',
-    avgElo: 2780,
-    activeRate: 90,
-    level: '钻石',
-  },
-  {
-    id: '5',
-    name: '江宁新手训练营',
-    emoji: '🌟',
-    members: 48,
-    maxMembers: 80,
-    region: '南京·江宁',
-    avgElo: 1800,
-    activeRate: 65,
-    level: '白银',
   },
 ])
 
 function goDetail(id: string) {
   uni.navigateTo({ url: `/pages/clubs/detail?id=${id}` })
 }
-
-function goMyClub() {
-  uni.navigateTo({ url: '/pages/clubs/detail?id=1' })
-}
-
-function goCreate() {
-  uni.navigateTo({ url: '/pages/clubs/create' })
-}
-
-function handleJoin(club: any) {
-  uni.showToast({ title: `已申请加入「${club.name}」`, icon: 'none' })
-}
 </script>
 
 <style scoped>
 .page {
   min-height: 100vh;
-  background-color: #1a1a2e;
+  background-color: #F5F5F5;
   padding-bottom: 120rpx;
 }
 
+/* 搜索栏 */
 .search-section {
-  padding: 24rpx 32rpx 16rpx;
+  padding: 16rpx 24rpx;
+  background-color: #FFFFFF;
 }
 
 .search-bar {
   display: flex;
   align-items: center;
-  background-color: #2a2a3e;
-  border-radius: 40rpx;
-  padding: 18rpx 28rpx;
+  background-color: #F5F5F5;
+  border-radius: 32rpx;
+  padding: 16rpx 24rpx;
   gap: 12rpx;
 }
 
@@ -165,82 +114,58 @@ function handleJoin(club: any) {
 
 .search-input {
   flex: 1;
-  font-size: 28rpx;
-  color: #f5f5f5;
-}
-
-.search-placeholder {
-  color: #6b6b80;
-}
-
-/* 快捷入口 */
-.quick-entry {
-  display: flex;
-  gap: 16rpx;
-  padding: 0 32rpx 24rpx;
-}
-
-.entry-item {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12rpx;
-  padding: 24rpx;
-  background-color: #2a2a3e;
-  border-radius: 16rpx;
-  border: 1rpx solid #3a3a50;
-}
-
-.entry-icon {
-  font-size: 28rpx;
-}
-
-.entry-text {
   font-size: 26rpx;
-  color: #f5f5f5;
+  color: #333333;
 }
 
-/* 区域标题 */
-.section-header {
-  padding: 16rpx 32rpx;
-}
-
-.section-title {
-  font-size: 30rpx;
-  font-weight: 600;
-  color: #f5f5f5;
+.placeholder {
+  color: #999999;
 }
 
 /* 俱乐部列表 */
-.club-list {
-  padding: 0 32rpx;
-  height: calc(100vh - 360rpx);
+.club-scroll {
+  height: calc(100vh - 140rpx);
+  padding: 16rpx 24rpx;
 }
 
 .club-card {
   display: flex;
   align-items: center;
+  background-color: #FFFFFF;
+  border-radius: 16rpx;
   padding: 24rpx;
-  background-color: #2a2a3e;
-  border-radius: 20rpx;
   margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
 }
 
 .club-avatar {
   width: 96rpx;
   height: 96rpx;
-  background: linear-gradient(135deg, #32324a 0%, #1e1e32 100%);
-  border-radius: 20rpx;
+  border-radius: 16rpx;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: #C41E3A;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 20rpx;
-  border: 1rpx solid #3a3a50;
+  border-radius: 16rpx;
 }
 
-.club-emoji {
-  font-size: 44rpx;
+.avatar-text {
+  font-size: 36rpx;
+  color: #FFFFFF;
+  font-weight: 700;
 }
 
 .club-info {
@@ -250,59 +175,43 @@ function handleJoin(club: any) {
 .club-name-row {
   display: flex;
   align-items: center;
-  gap: 12rpx;
+  gap: 8rpx;
   margin-bottom: 8rpx;
 }
 
 .club-name {
-  font-size: 28rpx;
+  font-size: 30rpx;
   font-weight: 600;
-  color: #f5f5f5;
+  color: #333333;
 }
 
-.club-level {
-  background-color: rgba(246, 195, 66, 0.12);
+.club-tag {
+  background-color: #FFF0F0;
   border-radius: 6rpx;
   padding: 2rpx 10rpx;
 }
 
-.level-text {
-  font-size: 18rpx;
-  color: #f6c342;
+.tag-text {
+  font-size: 20rpx;
+  color: #C41E3A;
 }
 
 .club-meta {
   display: flex;
   gap: 16rpx;
-  margin-bottom: 6rpx;
 }
 
-.meta-members,
-.meta-region {
-  font-size: 22rpx;
-  color: #6b6b80;
+.meta-text {
+  font-size: 24rpx;
+  color: #999999;
 }
 
-.club-stats {
-  display: flex;
-  gap: 16rpx;
+.club-arrow {
+  padding-left: 12rpx;
 }
 
-.stat-item {
-  font-size: 20rpx;
-  color: #b0b0c0;
-}
-
-.join-btn {
-  border: 1rpx solid rgba(246, 195, 66, 0.5);
-  border-radius: 12rpx;
-  padding: 12rpx 20rpx;
-  flex-shrink: 0;
-}
-
-.join-text {
-  font-size: 22rpx;
-  color: #f6c342;
-  white-space: nowrap;
+.arrow-icon {
+  font-size: 32rpx;
+  color: #CCCCCC;
 }
 </style>
