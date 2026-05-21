@@ -1046,47 +1046,121 @@ export function useRankings() {
 
 ## Correctness Properties
 
-以下属性应在所有情况下成立（universal quantification）:
+*A property is a characteristic or behavior that should hold true across all valid executions of a system—essentially, a formal statement about what the system should do. Properties serve as the bridge between human-readable specifications and machine-verifiable correctness guarantees.*
 
 ### Property 1: 赛事报名名额一致性
 
-∀ event: event.currentParticipants === count(registrations WHERE event_id = event.id AND status IN ('registered', 'checked_in'))
+*For any* event, the currentParticipants count SHALL equal the number of registrations with status 'registered' or 'checked_in' for that event.
+
+**Validates: Requirements 6.6, 9.4**
 
 ### Property 2: 支付金额正确性
 
-∀ order WHERE type = 'event_registration': order.amount === event.registrationFee * order.quantity + (event.deposit ?? 0)
+*For any* event registration order with valid registrationFee, quantity, and deposit, the order amount SHALL equal (registrationFee × quantity) + deposit.
+
+**Validates: Requirement 6.2**
 
 ### Property 3: 排行榜有序性
 
-∀ rankings list: ∀ i < j: rankings[i].score >= rankings[j].score
+*For any* rankings result list, all entries SHALL be ordered by score descending, with ties broken by most recent match time.
 
-### Property 4: 地理查询范围约束
+**Validates: Requirements 7.4, 7.5**
 
-∀ merchant IN queryResult: distance(merchant.location, queryCenter) <= queryRadius
+### Property 4: 地理查询范围与排序约束
+
+*For any* nearby merchant query result, all returned merchants SHALL be within the specified radius from the query center AND ordered by distance ascending.
+
+**Validates: Requirement 3.4**
 
 ### Property 5: ELO 零和性
 
-∀ match result: sum(allPlayers.scoreDelta) === 0
+*For any* completed four-player match, the sum of all players' score deltas SHALL be zero (within rounding tolerance of ±4).
+
+**Validates: Requirement 8.2**
 
 ### Property 6: 订单过期不可支付
 
-∀ order WHERE now() > order.expiresAt: order.status !== 'paid'(新支付)
+*For any* payment order where the current time exceeds expiresAt, the system SHALL reject payment attempts and the order SHALL NOT transition to 'paid' status.
+
+**Validates: Requirement 6.9**
 
 ### Property 7: 俱乐部成员数一致性
 
-∀ club: club.memberCount === count(club_members WHERE club_id = club.id AND status = 'active')
+*For any* club, the memberCount field SHALL equal the count of active member records associated with that club.
 
-### Property 8: 帖子图片数量限制
+**Validates: Requirement 9.4**
 
-∀ post: post.images.length <= 9
+### Property 8: 帖子内容与图片验证
+
+*For any* post creation request, content length outside [1, 2000] characters SHALL be rejected, and image count exceeding 9 SHALL be rejected.
+
+**Validates: Requirements 2.4, 2.5**
 
 ### Property 9: 商户评分范围
 
-∀ merchant: 0 <= merchant.rating <= 5.0
+*For any* merchant, the rating value SHALL be within [0.0, 5.0]. Ratings outside this range SHALL be rejected by validation.
 
-### Property 10: Tab 页面数据隔离
+**Validates: Requirement 3.7**
 
-∀ tabSwitch: 切换 tab 后加载的数据仅属于当前 tab 对应的筛选条件
+### Property 10: 分类筛选一致性
+
+*For any* filtered data list (merchants by category, events by status tab, rankings by level, articles by category), all items in the result SHALL match the selected filter criteria.
+
+**Validates: Requirements 3.2, 5.2, 7.2, 11.2**
+
+### Property 11: ELO 单调性
+
+*For any* player, beating a higher-rated opponent SHALL award more points than beating a lower-rated opponent, given the same player rating and K-factor.
+
+**Validates: Requirement 8.5**
+
+### Property 12: 重复报名拒绝
+
+*For any* user who already has an active registration for an event, subsequent registration attempts for the same event SHALL be rejected.
+
+**Validates: Requirement 6.7**
+
+### Property 13: 约局满员状态转换
+
+*For any* match where currentPlayers equals maxPlayers (4), the match status SHALL be 'full' and additional join requests SHALL be rejected.
+
+**Validates: Requirement 4.4**
+
+### Property 14: 支付回调幂等性
+
+*For any* payment callback processed multiple times with the same transaction ID, the system SHALL produce the same final state as processing it once (no duplicate participant count increments or duplicate order status changes).
+
+**Validates: Requirement 15.7**
+
+### Property 15: 手机号脱敏
+
+*For any* valid phone number displayed to users, the system SHALL mask middle digits (showing only first 3 and last 4 digits).
+
+**Validates: Requirement 15.6**
+
+### Property 16: XSS 内容过滤
+
+*For any* rich-text input containing script tags, event handlers, or other XSS vectors, the content filter SHALL remove or escape all dangerous elements while preserving safe content.
+
+**Validates: Requirement 15.5**
+
+### Property 17: WebSocket 重连退避
+
+*For any* reconnection attempt number n, the retry delay SHALL equal min(2^(n-1) × 1000ms, 30000ms), following exponential backoff with a 30-second cap.
+
+**Validates: Requirement 10.3**
+
+### Property 18: 俱乐部名称验证
+
+*For any* club creation request, the club name length SHALL be between 2 and 20 characters. Names outside this range SHALL be rejected.
+
+**Validates: Requirement 9.1**
+
+### Property 19: RBAC 权限隔离
+
+*For any* API endpoint and user role combination, the system SHALL grant access only if the role has explicit permission for that endpoint. Unauthorized access attempts SHALL return a 403 response.
+
+**Validates: Requirements 13.5, 15.2**
 
 ## Error Handling
 
