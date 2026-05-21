@@ -1,0 +1,134 @@
+/* ========================================
+   深掼会 - Premium Chinese Red Theme
+   Enterprise-grade mobile UI
+   ======================================== */
+
+:root {
+  /* Primary Colors */
+  --color-primary: #9B1B30;
+  --color-primary-dark: #8B1A2B;
+  --color-primary-darker: #6B0F1F;
+  --color-primary-light: #C62828;
+  
+  /* Header Gradient */
+  --gradient-header: linear-gradient(135deg, #8B1A2B, #6B0F1F);
+  --gradient-button: linear-gradient(135deg, #C62828, #9B1B30);
+  
+  /* Backgrounds */
+  --bg-page: #f2f2f5;
+  --bg-card: #ffffff;
+  --bg-header: var(--gradient-header);
+  
+  /* Text Colors */
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --text-tertiary: #999999;
+  --text-price: #C62828;
+  --text-white: #ffffff;
+  
+  /* Borders & Shadows */
+  --border-light: #eeeeee;
+  --border-lighter: #f0f0f0;
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.06);
+  --shadow-card-hover: 0 4px 20px rgba(0, 0, 0, 0.1);
+  
+  /* Status Colors */
+  --color-success: #4CAF50;
+  --color-warning: #FF9800;
+  --color-info: #2196F3;
+  --color-danger: #F44336;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-xxl: 24px;
+  
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+  
+  /* Layout */
+  --header-height: 50px;
+  --tabbar-height: 56px;
+  --safe-area-top: env(safe-area-inset-top, 44px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --max-width: 430px;
+  
+  /* Typography */
+  --font-family: 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  font-family: var(--font-family);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background-color: var(--bg-page);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+#app {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+  background-color: var(--bg-page);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-family: var(--font-family);
+}
+
+input, textarea {
+  border: none;
+  outline: none;
+  font-family: var(--font-family);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Page transition */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
+}
