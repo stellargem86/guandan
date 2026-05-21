@@ -42,3 +42,20 @@ export interface WalletTransaction {
   description: string
   created_at: string
 }
+
+/** 支付订单（赛事报名/套餐购买等） */
+export interface PaymentOrder {
+  id: number
+  orderNo: string
+  userId: number
+  type: 'event_registration' | 'package_purchase' | 'deposit'
+  amount: number
+  status: 'pending' | 'paid' | 'refunded' | 'cancelled' | 'expired'
+  paymentMethod: 'wechat' | 'balance'
+  /** 关联的赛事/套餐 ID */
+  relatedId: number
+  /** 支付截止时间 */
+  expiresAt: string
+  paidAt?: string
+  createdAt: string
+}

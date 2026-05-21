@@ -40,3 +40,54 @@ export interface ClubActivity {
   current_participants: number
   created_at: string
 }
+
+/** 俱乐部详情扩展接口 */
+export interface ClubDetail extends Club {
+  /** 公告列表 */
+  announcements: ClubNotice[]
+  /** 活动列表 */
+  activities: ClubActivity[]
+  /** 成就列表 */
+  achievements: ClubAchievement[]
+  /** 统计数据 */
+  stats: ClubStats
+}
+
+/** 俱乐部公告 */
+export interface ClubNotice {
+  id: number
+  clubId: number
+  title: string
+  content: string
+  createdAt: string
+  isPinned: boolean
+}
+
+/** 俱乐部成就 */
+export interface ClubAchievement {
+  id: number
+  title: string
+  description: string
+  icon: string
+  unlockedAt?: string
+}
+
+/** 俱乐部统计 */
+export interface ClubStats {
+  totalMembers: number
+  totalEvents: number
+  totalMatches: number
+  avgScore: number
+}
+
+/** 俱乐部聊天消息 */
+export interface ClubChatMessage {
+  id: number
+  clubId: number
+  userId: number
+  userNickname: string
+  userAvatar?: string
+  content: string
+  type: 'text' | 'image' | 'system'
+  createdAt: string
+}
