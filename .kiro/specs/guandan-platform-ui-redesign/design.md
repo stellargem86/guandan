@@ -1088,7 +1088,7 @@ export function useRankings() {
 
 *For any* club, the memberCount field SHALL equal the count of active member records associated with that club.
 
-**Validates: Requirement 9.4**
+**Validates: Requirements 9.4**
 
 ### Property 8: 帖子内容与图片验证
 
@@ -1100,7 +1100,7 @@ export function useRankings() {
 
 *For any* merchant, the rating value SHALL be within [0.0, 5.0]. Ratings outside this range SHALL be rejected by validation.
 
-**Validates: Requirement 3.7**
+**Validates: Requirements 3.7**
 
 ### Property 10: 分类筛选一致性
 
@@ -1112,7 +1112,7 @@ export function useRankings() {
 
 *For any* player, beating a higher-rated opponent SHALL award more points than beating a lower-rated opponent, given the same player rating and K-factor.
 
-**Validates: Requirement 8.5**
+**Validates: Requirements 8.5**
 
 ### Property 12: 重复报名拒绝
 
