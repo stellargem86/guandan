@@ -14,7 +14,7 @@ onHide(() => {
 })
 </script>
 
-<style>
+<style lang="scss">
 /* 掼蛋平台 - 中国红主题全局样式 */
 page {
   background-color: #F5F5F5;
