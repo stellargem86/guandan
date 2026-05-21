@@ -15,9 +15,7 @@ onHide(() => {
 </script>
 
 <style>
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import './src/styles/tailwind.css';
 
 /* 掼蛋平台 - 中国红主题全局样式 */
 page {
