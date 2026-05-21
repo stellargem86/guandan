@@ -1048,38 +1048,45 @@ export function useRankings() {
 
 以下属性应在所有情况下成立（universal quantification）:
 
-```typescript
-// Property 1: 赛事报名名额一致性
-// ∀ event: event.currentParticipants === count(registrations WHERE event_id = event.id AND status IN ('registered', 'checked_in'))
+### Property 1: 赛事报名名额一致性
 
-// Property 2: 支付金额正确性
-// ∀ order WHERE type = 'event_registration':
-//   order.amount === event.registrationFee * order.quantity + (event.deposit ?? 0)
+∀ event: event.currentParticipants === count(registrations WHERE event_id = event.id AND status IN ('registered', 'checked_in'))
 
-// Property 3: 排行榜有序性
-// ∀ rankings list: ∀ i < j: rankings[i].score >= rankings[j].score
+### Property 2: 支付金额正确性
 
-// Property 4: 地理查询范围约束
-// ∀ merchant IN queryResult: distance(merchant.location, queryCenter) <= queryRadius
+∀ order WHERE type = 'event_registration': order.amount === event.registrationFee * order.quantity + (event.deposit ?? 0)
 
-// Property 5: ELO 零和性
-// ∀ match result: sum(allPlayers.scoreDelta) === 0
+### Property 3: 排行榜有序性
 
-// Property 6: 订单过期不可支付
-// ∀ order WHERE now() > order.expiresAt: order.status !== 'paid'(新支付)
+∀ rankings list: ∀ i < j: rankings[i].score >= rankings[j].score
 
-// Property 7: 俱乐部成员数一致性
-// ∀ club: club.memberCount === count(club_members WHERE club_id = club.id AND status = 'active')
+### Property 4: 地理查询范围约束
 
-// Property 8: 帖子图片数量限制
-// ∀ post: post.images.length <= 9
+∀ merchant IN queryResult: distance(merchant.location, queryCenter) <= queryRadius
 
-// Property 9: 商户评分范围
-// ∀ merchant: 0 <= merchant.rating <= 5.0
+### Property 5: ELO 零和性
 
-// Property 10: Tab 页面数据隔离
-// ∀ tabSwitch: 切换 tab 后加载的数据仅属于当前 tab 对应的筛选条件
-```
+∀ match result: sum(allPlayers.scoreDelta) === 0
+
+### Property 6: 订单过期不可支付
+
+∀ order WHERE now() > order.expiresAt: order.status !== 'paid'(新支付)
+
+### Property 7: 俱乐部成员数一致性
+
+∀ club: club.memberCount === count(club_members WHERE club_id = club.id AND status = 'active')
+
+### Property 8: 帖子图片数量限制
+
+∀ post: post.images.length <= 9
+
+### Property 9: 商户评分范围
+
+∀ merchant: 0 <= merchant.rating <= 5.0
+
+### Property 10: Tab 页面数据隔离
+
+∀ tabSwitch: 切换 tab 后加载的数据仅属于当前 tab 对应的筛选条件
 
 ## Error Handling
 
