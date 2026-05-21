@@ -1058,7 +1058,7 @@ export function useRankings() {
 
 *For any* event registration order with valid registrationFee, quantity, and deposit, the order amount SHALL equal (registrationFee × quantity) + deposit.
 
-**Validates: Requirement 6.2**
+**Validates: Requirements 6.2**
 
 ### Property 3: 排行榜有序性
 
