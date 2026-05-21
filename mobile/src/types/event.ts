@@ -30,3 +30,37 @@ export interface EventRegistration {
   registered_at: string
   checked_in_at?: string
 }
+
+/** 赛事详情扩展接口 */
+export interface EventDetail extends GameEvent {
+  /** 比赛规则（富文本） */
+  rules: string
+  /** 奖金设置列表 */
+  prizeSettings: PrizeSetting[]
+  /** 赛程安排 */
+  schedule: EventSchedule[]
+  /** 报名截止时间 */
+  registrationDeadline: string
+  /** 保证金 */
+  deposit?: number
+}
+
+/** 奖金设置 */
+export interface PrizeSetting {
+  /** 名次 */
+  rank: number
+  /** 标签（如冠军/亚军/季军） */
+  label: string
+  /** 奖金金额 */
+  amount: number
+}
+
+/** 赛程安排 */
+export interface EventSchedule {
+  /** 轮次 */
+  round: number
+  /** 开始时间 */
+  startTime: string
+  /** 描述 */
+  description: string
+}
