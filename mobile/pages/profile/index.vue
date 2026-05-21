@@ -1,83 +1,54 @@
 <template>
   <view class="page">
-    <!-- 用户卡片 -->
+    <!-- 用户信息卡片 -->
     <view class="user-card">
-      <view class="user-info-row">
-        <view class="user-avatar">
-          <text class="avatar-text">陈</text>
+      <view class="user-bg"></view>
+      <view class="user-content">
+        <view class="user-row">
+          <view class="user-avatar">
+            <text class="avatar-char">掼</text>
+          </view>
+          <view class="user-info">
+            <text class="user-name">掼蛋小王子</text>
+            <text class="user-id">ID:10085</text>
+          </view>
         </view>
-        <view class="user-details">
-          <text class="user-name">陈总·科技</text>
-          <text class="user-id">深掼会 ID: SGH-2024-0086</text>
-        </view>
-        <view class="edit-btn">
-          <text class="edit-text">编辑</text>
-        </view>
-      </view>
-
-      <!-- 数据统计 -->
-      <view class="user-stats">
-        <view class="stat-item">
-          <text class="stat-value gold">2680</text>
-          <text class="stat-label">ELO分</text>
-        </view>
-        <view class="stat-divider"></view>
-        <view class="stat-item">
-          <text class="stat-value">128</text>
-          <text class="stat-label">场次</text>
-        </view>
-        <view class="stat-divider"></view>
-        <view class="stat-item">
-          <text class="stat-value green">62%</text>
-          <text class="stat-label">胜率</text>
-        </view>
-        <view class="stat-divider"></view>
-        <view class="stat-item">
-          <text class="stat-value">A+</text>
-          <text class="stat-label">段位</text>
+        <!-- 统计数据 -->
+        <view class="user-stats">
+          <view class="stat-item">
+            <text class="stat-value">2680</text>
+            <text class="stat-label">积分</text>
+          </view>
+          <view class="stat-item">
+            <text class="stat-value">12</text>
+            <text class="stat-label">赛事</text>
+          </view>
+          <view class="stat-item">
+            <text class="stat-value">5</text>
+            <text class="stat-label">荣誉</text>
+          </view>
         </view>
       </view>
     </view>
 
-    <!-- 钱包卡片 -->
-    <view class="wallet-card" @tap="goWallet">
-      <view class="wallet-left">
-        <text class="wallet-icon">💰</text>
-        <view class="wallet-info">
-          <text class="wallet-label">我的钱包</text>
-          <text class="wallet-balance">¥ 680.00</text>
+    <!-- 功能网格 -->
+    <view class="function-grid">
+      <view class="grid-item" v-for="item in gridItems" :key="item.title" @tap="handleGridTap(item)">
+        <view class="grid-icon-wrap">
+          <text class="grid-icon">{{ item.icon }}</text>
         </view>
-      </view>
-      <view class="wallet-action">
-        <text class="wallet-arrow">›</text>
+        <text class="grid-label">{{ item.title }}</text>
       </view>
     </view>
 
-    <!-- 功能菜单 -->
+    <!-- 菜单列表 -->
     <view class="menu-section">
       <view class="menu-item" v-for="item in menuItems" :key="item.title" @tap="handleMenu(item)">
         <view class="menu-left">
           <text class="menu-icon">{{ item.icon }}</text>
           <text class="menu-title">{{ item.title }}</text>
         </view>
-        <view class="menu-right">
-          <text class="menu-badge" v-if="item.badge">{{ item.badge }}</text>
-          <text class="menu-arrow">›</text>
-        </view>
-      </view>
-    </view>
-
-    <!-- 成就徽章预览 -->
-    <view class="badges-section">
-      <view class="badges-header">
-        <text class="badges-title">荣誉徽章</text>
-        <text class="badges-more" @tap="goBadges">查看全部 ›</text>
-      </view>
-      <view class="badges-list">
-        <view class="badge-item" v-for="badge in badges" :key="badge.name">
-          <text class="badge-emoji">{{ badge.emoji }}</text>
-          <text class="badge-name">{{ badge.name }}</text>
-        </view>
+        <text class="menu-arrow">›</text>
       </view>
     </view>
   </view>
@@ -86,29 +57,29 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+const gridItems = ref([
+  { icon: '🏆', title: '我的赛事', path: '/pages/profile/orders' },
+  { icon: '💰', title: '我的钱包', path: '/pages/profile/wallet' },
+  { icon: '🏅', title: '荣誉徽章', path: '/pages/profile/badges' },
+  { icon: '📊', title: '数据分析', path: '' },
+])
+
 const menuItems = ref([
-  { icon: '🏆', title: '赛事记录', badge: '3', path: '/pages/profile/orders' },
-  { icon: '🛒', title: '购买记录', badge: '', path: '/pages/profile/orders' },
-  { icon: '🏅', title: '荣誉徽章', badge: '12', path: '/pages/profile/badges' },
-  { icon: '👥', title: '找掼友', badge: '', path: '' },
-  { icon: '📊', title: '数据分析', badge: '', path: '' },
-  { icon: '⚙️', title: '设置', badge: '', path: '/pages/profile/settings' },
+  { icon: '🎯', title: '我的俱乐部', path: '/pages/clubs/detail?id=1' },
+  { icon: '📋', title: '报名记录', path: '/pages/profile/orders' },
+  { icon: '👥', title: '掼蛋好友', path: '' },
+  { icon: '🔔', title: '消息通知', path: '' },
+  { icon: '💳', title: '掼蛋交大厅', path: '' },
+  { icon: '🛡️', title: '隐私安全', path: '' },
+  { icon: '⚙️', title: '设置', path: '/pages/profile/settings' },
 ])
 
-const badges = ref([
-  { emoji: '🥇', name: '首胜' },
-  { emoji: '🔥', name: '连胜5场' },
-  { emoji: '⭐', name: 'A段位' },
-  { emoji: '🎯', name: '精准出牌' },
-  { emoji: '💎', name: 'VIP会员' },
-])
-
-function goWallet() {
-  uni.navigateTo({ url: '/pages/profile/wallet' })
-}
-
-function goBadges() {
-  uni.navigateTo({ url: '/pages/profile/badges' })
+function handleGridTap(item: any) {
+  if (item.path) {
+    uni.navigateTo({ url: item.path })
+  } else {
+    uni.showToast({ title: '功能开发中', icon: 'none' })
+  }
 }
 
 function handleMenu(item: any) {
@@ -123,165 +94,141 @@ function handleMenu(item: any) {
 <style scoped>
 .page {
   min-height: 100vh;
-  background-color: #1a1a2e;
-  padding: 32rpx;
+  background-color: #F5F5F5;
   padding-bottom: 120rpx;
 }
 
 /* 用户卡片 */
 .user-card {
-  background-color: #2a2a3e;
-  border-radius: 24rpx;
-  padding: 28rpx;
-  margin-bottom: 24rpx;
+  position: relative;
+  margin-bottom: 16rpx;
 }
 
-.user-info-row {
+.user-bg {
+  height: 200rpx;
+  background: linear-gradient(135deg, #C41E3A 0%, #A01830 100%);
+}
+
+.user-content {
+  background-color: #FFFFFF;
+  margin: -60rpx 24rpx 0;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  position: relative;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+}
+
+.user-row {
   display: flex;
   align-items: center;
-  margin-bottom: 28rpx;
+  margin-bottom: 24rpx;
 }
 
 .user-avatar {
   width: 96rpx;
   height: 96rpx;
-  background: linear-gradient(135deg, #f6c342 0%, #d4a537 100%);
+  background-color: #C41E3A;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-right: 20rpx;
+  border: 4rpx solid #FFFFFF;
+  box-shadow: 0 4rpx 12rpx rgba(196, 30, 58, 0.3);
 }
 
-.avatar-text {
+.avatar-char {
   font-size: 36rpx;
-  color: #1a1a2e;
+  color: #FFFFFF;
   font-weight: 700;
 }
 
-.user-details {
+.user-info {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6rpx;
 }
 
 .user-name {
   font-size: 32rpx;
   font-weight: 700;
-  color: #f5f5f5;
+  color: #333333;
+  margin-bottom: 4rpx;
 }
 
 .user-id {
-  font-size: 22rpx;
-  color: #6b6b80;
-}
-
-.edit-btn {
-  border: 1rpx solid #3a3a50;
-  border-radius: 20rpx;
-  padding: 10rpx 24rpx;
-}
-
-.edit-text {
   font-size: 24rpx;
-  color: #b0b0c0;
+  color: #999999;
 }
 
+/* 统计 */
 .user-stats {
   display: flex;
-  align-items: center;
   justify-content: space-around;
-  padding-top: 24rpx;
-  border-top: 1rpx solid #3a3a50;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #F0F0F0;
 }
 
 .stat-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6rpx;
+  gap: 4rpx;
 }
 
 .stat-value {
   font-size: 32rpx;
   font-weight: 700;
-  color: #f5f5f5;
-}
-
-.stat-value.gold {
-  color: #f6c342;
-}
-
-.stat-value.green {
-  color: #10b981;
+  color: #C41E3A;
 }
 
 .stat-label {
   font-size: 22rpx;
-  color: #6b6b80;
+  color: #999999;
 }
 
-.stat-divider {
-  width: 1rpx;
-  height: 48rpx;
-  background-color: #3a3a50;
-}
-
-/* 钱包卡片 */
-.wallet-card {
+/* 功能网格 */
+.function-grid {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: linear-gradient(135deg, rgba(246, 195, 66, 0.08) 0%, rgba(246, 195, 66, 0.03) 100%);
-  border: 1rpx solid rgba(246, 195, 66, 0.15);
-  border-radius: 20rpx;
-  padding: 28rpx;
-  margin-bottom: 24rpx;
+  background-color: #FFFFFF;
+  padding: 24rpx;
+  margin: 0 24rpx 16rpx;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
 }
 
-.wallet-left {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-}
-
-.wallet-icon {
-  font-size: 40rpx;
-}
-
-.wallet-info {
+.grid-item {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4rpx;
+  align-items: center;
+  gap: 12rpx;
 }
 
-.wallet-label {
-  font-size: 24rpx;
-  color: #6b6b80;
-}
-
-.wallet-balance {
-  font-size: 36rpx;
-  font-weight: 700;
-  color: #f6c342;
-}
-
-.wallet-action {
-  padding: 0 8rpx;
-}
-
-.wallet-arrow {
-  font-size: 36rpx;
-  color: #6b6b80;
-}
-
-/* 菜单 */
-.menu-section {
-  background-color: #2a2a3e;
+.grid-icon-wrap {
+  width: 80rpx;
+  height: 80rpx;
+  background-color: #FFF0F0;
   border-radius: 20rpx;
-  margin-bottom: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-icon {
+  font-size: 36rpx;
+}
+
+.grid-label {
+  font-size: 24rpx;
+  color: #333333;
+}
+
+/* 菜单列表 */
+.menu-section {
+  background-color: #FFFFFF;
+  margin: 0 24rpx;
+  border-radius: 16rpx;
   overflow: hidden;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
 }
 
 .menu-item {
@@ -289,7 +236,7 @@ function handleMenu(item: any) {
   align-items: center;
   justify-content: space-between;
   padding: 28rpx 24rpx;
-  border-bottom: 1rpx solid #3a3a50;
+  border-bottom: 1rpx solid #F5F5F5;
 }
 
 .menu-item:last-child {
@@ -308,71 +255,11 @@ function handleMenu(item: any) {
 
 .menu-title {
   font-size: 28rpx;
-  color: #f5f5f5;
-}
-
-.menu-right {
-  display: flex;
-  align-items: center;
-  gap: 12rpx;
-}
-
-.menu-badge {
-  font-size: 20rpx;
-  color: #f6c342;
-  background-color: rgba(246, 195, 66, 0.12);
-  border-radius: 16rpx;
-  padding: 4rpx 14rpx;
+  color: #333333;
 }
 
 .menu-arrow {
-  font-size: 32rpx;
-  color: #6b6b80;
-}
-
-/* 徽章 */
-.badges-section {
-  background-color: #2a2a3e;
-  border-radius: 20rpx;
-  padding: 24rpx;
-}
-
-.badges-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20rpx;
-}
-
-.badges-title {
   font-size: 28rpx;
-  font-weight: 600;
-  color: #f5f5f5;
-}
-
-.badges-more {
-  font-size: 24rpx;
-  color: #f6c342;
-}
-
-.badges-list {
-  display: flex;
-  gap: 24rpx;
-}
-
-.badge-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8rpx;
-}
-
-.badge-emoji {
-  font-size: 40rpx;
-}
-
-.badge-name {
-  font-size: 20rpx;
-  color: #6b6b80;
+  color: #CCCCCC;
 }
 </style>
