@@ -4,79 +4,299 @@
       "path": "pages/index/index",
       "style": {
         "navigationBarTitleText": "掼友圈",
-        "navigationBarBackgroundColor": "#1a1a2e",
+        "navigationBarBackgroundColor": "#C41E3A",
         "navigationBarTextStyle": "white",
-        "backgroundColor": "#1a1a2e"
+        "backgroundColor": "#F5F5F5"
       }
     },
     {
       "path": "pages/events/index",
       "style": {
         "navigationBarTitleText": "赛事",
-        "navigationBarBackgroundColor": "#1a1a2e",
+        "navigationBarBackgroundColor": "#C41E3A",
         "navigationBarTextStyle": "white",
-        "backgroundColor": "#1a1a2e"
+        "backgroundColor": "#F5F5F5"
       }
     },
     {
       "path": "pages/news/index",
       "style": {
         "navigationBarTitleText": "资讯",
-        "navigationBarBackgroundColor": "#1a1a2e",
+        "navigationBarBackgroundColor": "#C41E3A",
         "navigationBarTextStyle": "white",
-        "backgroundColor": "#1a1a2e"
+        "backgroundColor": "#F5F5F5"
       }
     },
     {
       "path": "pages/clubs/index",
       "style": {
         "navigationBarTitleText": "俱乐部",
-        "navigationBarBackgroundColor": "#1a1a2e",
+        "navigationBarBackgroundColor": "#C41E3A",
         "navigationBarTextStyle": "white",
-        "backgroundColor": "#1a1a2e"
+        "backgroundColor": "#F5F5F5"
       }
     },
     {
       "path": "pages/profile/index",
       "style": {
         "navigationBarTitleText": "我的",
-        "navigationBarBackgroundColor": "#1a1a2e",
+        "navigationBarBackgroundColor": "#C41E3A",
         "navigationBarTextStyle": "white",
-        "backgroundColor": "#1a1a2e"
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/index/post-detail",
+      "style": {
+        "navigationBarTitleText": "帖子详情",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/index/create-post",
+      "style": {
+        "navigationBarTitleText": "发帖",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/index/map",
+      "style": {
+        "navigationBarTitleText": "地图找局",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/index/merchant-detail",
+      "style": {
+        "navigationBarTitleText": "商户详情",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/index/package-detail",
+      "style": {
+        "navigationBarTitleText": "套餐详情",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/index/matchmaking",
+      "style": {
+        "navigationBarTitleText": "一键组局",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/index/create-match",
+      "style": {
+        "navigationBarTitleText": "发起组局",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/events/detail",
+      "style": {
+        "navigationBarTitleText": "赛事详情",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/events/rankings",
+      "style": {
+        "navigationBarTitleText": "天梯榜",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/events/payment",
+      "style": {
+        "navigationBarTitleText": "报名支付",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/news/detail",
+      "style": {
+        "navigationBarTitleText": "资讯详情",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/clubs/detail",
+      "style": {
+        "navigationBarTitleText": "俱乐部详情",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/clubs/members",
+      "style": {
+        "navigationBarTitleText": "成员列表",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/clubs/chat",
+      "style": {
+        "navigationBarTitleText": "俱乐部聊天",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/clubs/create",
+      "style": {
+        "navigationBarTitleText": "创建俱乐部",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/clubs/manage",
+      "style": {
+        "navigationBarTitleText": "内部管理",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/profile/wallet",
+      "style": {
+        "navigationBarTitleText": "数字钱包",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/profile/orders",
+      "style": {
+        "navigationBarTitleText": "订单记录",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/profile/badges",
+      "style": {
+        "navigationBarTitleText": "荣誉徽章",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/profile/settings",
+      "style": {
+        "navigationBarTitleText": "设置",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/common/login",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/common/payment-result",
+      "style": {
+        "navigationBarTitleText": "支付结果",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "path": "pages/common/webview",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationBarBackgroundColor": "#C41E3A",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#F5F5F5"
       }
     }
   ],
   "globalStyle": {
     "navigationBarTextStyle": "white",
-    "navigationBarTitleText": "深掼会",
-    "navigationBarBackgroundColor": "#1a1a2e",
-    "backgroundColor": "#1a1a2e"
+    "navigationBarTitleText": "掼蛋平台",
+    "navigationBarBackgroundColor": "#C41E3A",
+    "backgroundColor": "#F5F5F5",
+    "backgroundTextStyle": "dark",
+    "backgroundColorTop": "#F5F5F5",
+    "backgroundColorBottom": "#F5F5F5"
   },
   "tabBar": {
-    "color": "#6b6b80",
-    "selectedColor": "#f6c342",
-    "borderStyle": "black",
-    "backgroundColor": "#1a1a2e",
+    "color": "#999999",
+    "selectedColor": "#C41E3A",
+    "borderStyle": "white",
+    "backgroundColor": "#FFFFFF",
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "掼友圈"
+        "text": "掼友圈",
+        "iconPath": "static/icons/tab-home.png",
+        "selectedIconPath": "static/icons/tab-home-active.png"
       },
       {
         "pagePath": "pages/events/index",
-        "text": "赛事"
+        "text": "赛事",
+        "iconPath": "static/icons/tab-events.png",
+        "selectedIconPath": "static/icons/tab-events-active.png"
       },
       {
         "pagePath": "pages/news/index",
-        "text": "资讯"
+        "text": "资讯",
+        "iconPath": "static/icons/tab-news.png",
+        "selectedIconPath": "static/icons/tab-news-active.png"
       },
       {
         "pagePath": "pages/clubs/index",
-        "text": "俱乐部"
+        "text": "俱乐部",
+        "iconPath": "static/icons/tab-clubs.png",
+        "selectedIconPath": "static/icons/tab-clubs-active.png"
       },
       {
         "pagePath": "pages/profile/index",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "static/icons/tab-profile.png",
+        "selectedIconPath": "static/icons/tab-profile-active.png"
       }
     ]
   }

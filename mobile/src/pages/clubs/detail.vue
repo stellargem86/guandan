@@ -5,106 +5,109 @@
       <view class="header-bg"></view>
       <view class="header-content">
         <view class="club-avatar">
-          <text class="avatar-emoji">🏆</text>
+          <text class="avatar-text">南</text>
         </view>
-        <text class="club-name">金陵掼蛋俱乐部</text>
-        <text class="club-id">ID: GD-NJ-001</text>
+        <text class="club-name">南京掼蛋联盟</text>
+        <text class="club-id">ID: 10001</text>
+      </view>
+    </view>
+
+    <!-- 导航Tab -->
+    <view class="nav-tabs">
+      <view
+        class="nav-tab"
+        :class="{ active: activeNav === tab.value }"
+        v-for="tab in navTabs"
+        :key="tab.value"
+        @tap="activeNav = tab.value"
+      >
+        <text class="nav-tab-text" :class="{ active: activeNav === tab.value }">{{ tab.label }}</text>
       </view>
     </view>
 
     <!-- 数据统计 -->
-    <view class="stats-row">
-      <view class="stat-item">
-        <text class="stat-value">128</text>
-        <text class="stat-label">成员</text>
-      </view>
-      <view class="stat-divider"></view>
-      <view class="stat-item">
-        <text class="stat-value">98</text>
-        <text class="stat-label">活跃</text>
-      </view>
-      <view class="stat-divider"></view>
-      <view class="stat-item">
-        <text class="stat-value gold">2680</text>
-        <text class="stat-label">ELO均分</text>
-      </view>
-      <view class="stat-divider"></view>
-      <view class="stat-item">
-        <text class="stat-value">36</text>
-        <text class="stat-label">本月赛事</text>
+    <view class="stats-card" v-if="activeNav === 'info'">
+      <view class="stats-row">
+        <view class="stat-item">
+          <text class="stat-value">128</text>
+          <text class="stat-label">成员</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <text class="stat-value">36</text>
+          <text class="stat-label">活跃</text>
+        </view>
       </view>
     </view>
 
-    <!-- 俱乐部简介 -->
-    <view class="section">
-      <text class="section-title">俱乐部简介</text>
-      <view class="section-card">
-        <text class="desc-text">
-          金陵掼蛋俱乐部成立于2022年，是南京地区最活跃的掼蛋竞技社群之一。俱乐部汇聚了来自金融、科技、教育等多个行业的精英牌友，定期举办俱乐部内部赛事和跨俱乐部对抗赛。我们崇尚"以牌会友、以技交心"的理念，致力于打造高品质的掼蛋社交圈。
-        </text>
-      </view>
+    <!-- 俱乐部介绍 -->
+    <view class="section-card" v-if="activeNav === 'info'">
+      <text class="desc-text">
+        掼蛋兴趣爱好相同的朋友组织机构，提供友互竞技掼蛋服务的长期性组织。俱乐部致力于为牌友提供高品质的竞技环境和社交平台。
+      </text>
     </view>
 
-    <!-- 俱乐部管理层 -->
-    <view class="section">
-      <text class="section-title">管理团队</text>
-      <view class="admin-list">
-        <view class="admin-item" v-for="admin in admins" :key="admin.name">
-          <view class="admin-avatar">
-            <text class="admin-avatar-text">{{ admin.avatar }}</text>
+    <!-- 俱乐部聊天入口 -->
+    <view class="section-card chat-section" v-if="activeNav === 'info'">
+      <text class="section-title">俱乐部聊天</text>
+      <view class="chat-list">
+        <view class="chat-item">
+          <view class="chat-avatar">
+            <text class="chat-avatar-text">牌</text>
           </view>
-          <view class="admin-info">
-            <text class="admin-name">{{ admin.name }}</text>
-            <text class="admin-role">{{ admin.role }}</text>
+          <view class="chat-content">
+            <text class="chat-name">牌友互通有无</text>
+            <text class="chat-msg">今晚有人组局吗？</text>
           </view>
+          <text class="chat-time">16:30</text>
+        </view>
+        <view class="chat-item">
+          <view class="chat-avatar">
+            <text class="chat-avatar-text">赛</text>
+          </view>
+          <view class="chat-content">
+            <text class="chat-name">赛板了石</text>
+            <text class="chat-msg">明天比赛报名截止</text>
+          </view>
+          <text class="chat-time">15:20</text>
         </view>
       </view>
     </view>
 
     <!-- 俱乐部活动 -->
-    <view class="section">
+    <view class="section-card" v-if="activeNav === 'activity'">
       <text class="section-title">俱乐部活动</text>
       <view class="activity-list">
-        <view class="activity-item" v-for="activity in activities" :key="activity.id">
-          <view class="activity-date">
-            <text class="date-day">{{ activity.day }}</text>
-            <text class="date-month">{{ activity.month }}</text>
-          </view>
+        <view class="activity-item" v-for="act in activities" :key="act.id">
+          <view class="activity-dot" :class="act.statusClass"></view>
           <view class="activity-info">
-            <text class="activity-title">{{ activity.title }}</text>
-            <text class="activity-desc">{{ activity.desc }}</text>
-          </view>
-          <view class="activity-status" :class="activity.statusClass">
-            <text class="status-text">{{ activity.status }}</text>
+            <text class="activity-title">{{ act.title }}</text>
+            <text class="activity-desc">{{ act.desc }}</text>
           </view>
         </view>
       </view>
     </view>
 
-    <!-- 成员预览 -->
-    <view class="section">
-      <view class="section-header-row">
-        <text class="section-title">俱乐部成员</text>
-        <text class="section-more" @tap="goMembers">查看全部 ›</text>
-      </view>
-      <view class="member-preview">
-        <view class="member-avatar" v-for="(m, idx) in memberPreview" :key="idx">
-          <text class="member-text">{{ m }}</text>
-        </view>
-        <view class="member-more">
-          <text class="more-text">+120</text>
+    <!-- 成员列表 -->
+    <view class="section-card" v-if="activeNav === 'members'">
+      <text class="section-title">俱乐部成员</text>
+      <view class="member-list">
+        <view class="member-item" v-for="m in members" :key="m.id">
+          <view class="member-avatar">
+            <text class="member-char">{{ m.name.charAt(0) }}</text>
+          </view>
+          <view class="member-info">
+            <text class="member-name">{{ m.name }}</text>
+            <text class="member-role">{{ m.role }}</text>
+          </view>
         </view>
       </view>
     </view>
 
     <!-- 底部操作 -->
     <view class="bottom-bar">
-      <view class="chat-btn" @tap="goChat">
-        <text class="chat-icon">💬</text>
-        <text class="chat-text">俱乐部聊天</text>
-      </view>
-      <view class="action-btn" @tap="handleJoin">
-        <text class="action-text">申请加入</text>
+      <view class="apply-btn" @tap="handleApply">
+        <text class="apply-text">申请加入</text>
       </view>
     </view>
   </view>
@@ -113,62 +116,30 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const admins = ref([
-  { avatar: '张', name: '张会长', role: '会长' },
-  { avatar: '李', name: '李副会', role: '副会长' },
-  { avatar: '王', name: '王秘书', role: '秘书长' },
-])
+const activeNav = ref('info')
+
+const navTabs = [
+  { label: '公告', value: 'info' },
+  { label: '活动', value: 'activity' },
+  { label: '成员', value: 'members' },
+  { label: '战绩', value: 'records' },
+]
 
 const activities = ref([
-  {
-    id: '1',
-    day: '15',
-    month: '3月',
-    title: '周五晚间积分赛',
-    desc: '本周五20:00，金陵会所VIP厅',
-    status: '报名中',
-    statusClass: 'enrolling',
-  },
-  {
-    id: '2',
-    day: '18',
-    month: '3月',
-    title: '跨俱乐部友谊赛',
-    desc: '对阵龙虎山精英会，4v4',
-    status: '即将开始',
-    statusClass: 'upcoming',
-  },
-  {
-    id: '3',
-    day: '22',
-    month: '3月',
-    title: '新成员欢迎赛',
-    desc: '欢迎新加入的8位牌友',
-    status: '筹备中',
-    statusClass: 'preparing',
-  },
-  {
-    id: '4',
-    day: '10',
-    month: '3月',
-    title: '月度冠军争霸赛',
-    desc: '恭喜陈总夺得本月冠军',
-    status: '已结束',
-    statusClass: 'finished',
-  },
+  { id: '1', title: '周末友谊赛', desc: '本周六14:00', statusClass: 'active' },
+  { id: '2', title: '月度积分赛', desc: '下周一20:00', statusClass: 'upcoming' },
+  { id: '3', title: '新人欢迎赛', desc: '已结束', statusClass: 'done' },
 ])
 
-const memberPreview = ref(['张', '李', '王', '陈', '刘', '赵', '周', '吴'])
+const members = ref([
+  { id: '1', name: '张会长', role: '会长' },
+  { id: '2', name: '李副会', role: '副会长' },
+  { id: '3', name: '王秘书', role: '秘书' },
+  { id: '4', name: '赵教练', role: '成员' },
+  { id: '5', name: '陈掼友', role: '成员' },
+])
 
-function goMembers() {
-  uni.navigateTo({ url: '/pages/clubs/members' })
-}
-
-function goChat() {
-  uni.navigateTo({ url: '/pages/clubs/chat' })
-}
-
-function handleJoin() {
+function handleApply() {
   uni.showToast({ title: '申请已发送', icon: 'success' })
 }
 </script>
@@ -176,19 +147,18 @@ function handleJoin() {
 <style scoped>
 .page {
   min-height: 100vh;
-  background-color: #1a1a2e;
+  background-color: #F5F5F5;
   padding-bottom: 140rpx;
 }
 
 /* 头部 */
 .club-header {
   position: relative;
-  padding-bottom: 32rpx;
 }
 
 .header-bg {
   height: 200rpx;
-  background: linear-gradient(135deg, #2a2a3e 0%, #32324a 50%, #1e1e32 100%);
+  background: linear-gradient(135deg, #C41E3A 0%, #A01830 100%);
 }
 
 .header-content {
@@ -201,40 +171,72 @@ function handleJoin() {
 .club-avatar {
   width: 120rpx;
   height: 120rpx;
-  background: linear-gradient(135deg, #f6c342 0%, #d4a537 100%);
-  border-radius: 28rpx;
+  background-color: #C41E3A;
+  border-radius: 24rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 4rpx solid #1a1a2e;
-  margin-bottom: 16rpx;
+  border: 6rpx solid #FFFFFF;
+  margin-bottom: 12rpx;
 }
 
-.avatar-emoji {
-  font-size: 56rpx;
+.avatar-text {
+  font-size: 48rpx;
+  color: #FFFFFF;
+  font-weight: 700;
 }
 
 .club-name {
-  font-size: 36rpx;
+  font-size: 34rpx;
   font-weight: 700;
-  color: #f5f5f5;
-  margin-bottom: 8rpx;
+  color: #333333;
+  margin-bottom: 4rpx;
 }
 
 .club-id {
   font-size: 24rpx;
-  color: #6b6b80;
+  color: #999999;
 }
 
-/* 数据统计 */
+/* 导航Tab */
+.nav-tabs {
+  display: flex;
+  background-color: #FFFFFF;
+  margin-top: 24rpx;
+  padding: 0 24rpx;
+  border-bottom: 1rpx solid #F0F0F0;
+}
+
+.nav-tab {
+  padding: 20rpx 24rpx;
+}
+
+.nav-tab.active {
+  border-bottom: 4rpx solid #C41E3A;
+}
+
+.nav-tab-text {
+  font-size: 28rpx;
+  color: #999999;
+}
+
+.nav-tab-text.active {
+  color: #C41E3A;
+  font-weight: 600;
+}
+
+/* 统计 */
+.stats-card {
+  background-color: #FFFFFF;
+  margin: 16rpx 24rpx;
+  border-radius: 16rpx;
+  padding: 24rpx;
+}
+
 .stats-row {
   display: flex;
-  align-items: center;
   justify-content: space-around;
-  padding: 28rpx 32rpx;
-  margin: 24rpx 32rpx;
-  background-color: #2a2a3e;
-  border-radius: 20rpx;
+  align-items: center;
 }
 
 .stat-item {
@@ -245,140 +247,126 @@ function handleJoin() {
 }
 
 .stat-value {
-  font-size: 32rpx;
+  font-size: 36rpx;
   font-weight: 700;
-  color: #f5f5f5;
-}
-
-.stat-value.gold {
-  color: #f6c342;
+  color: #333333;
 }
 
 .stat-label {
-  font-size: 22rpx;
-  color: #6b6b80;
+  font-size: 24rpx;
+  color: #999999;
 }
 
 .stat-divider {
   width: 1rpx;
   height: 48rpx;
-  background-color: #3a3a50;
+  background-color: #F0F0F0;
 }
 
 /* 通用区块 */
-.section {
-  padding: 0 32rpx 32rpx;
+.section-card {
+  background-color: #FFFFFF;
+  margin: 16rpx 24rpx;
+  border-radius: 16rpx;
+  padding: 24rpx;
 }
 
 .section-title {
   font-size: 30rpx;
   font-weight: 600;
-  color: #f5f5f5;
+  color: #333333;
   margin-bottom: 16rpx;
-}
-
-.section-header-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16rpx;
-}
-
-.section-more {
-  font-size: 24rpx;
-  color: #f6c342;
-}
-
-.section-card {
-  background-color: #2a2a3e;
-  border-radius: 16rpx;
-  padding: 24rpx;
 }
 
 .desc-text {
   font-size: 26rpx;
-  color: #b0b0c0;
+  color: #666666;
   line-height: 1.8;
 }
 
-/* 管理层 */
-.admin-list {
+/* 聊天列表 */
+.chat-list {
   display: flex;
-  gap: 24rpx;
+  flex-direction: column;
+  gap: 16rpx;
 }
 
-.admin-item {
+.chat-item {
   display: flex;
   align-items: center;
-  gap: 12rpx;
-  background-color: #2a2a3e;
-  border-radius: 12rpx;
-  padding: 16rpx 20rpx;
+  gap: 16rpx;
 }
 
-.admin-avatar {
-  width: 48rpx;
-  height: 48rpx;
-  background: linear-gradient(135deg, #f6c342 0%, #d4a537 100%);
+.chat-avatar {
+  width: 72rpx;
+  height: 72rpx;
   border-radius: 50%;
+  background-color: #FFF0F0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.admin-avatar-text {
-  font-size: 20rpx;
-  color: #1a1a2e;
-  font-weight: 700;
+.chat-avatar-text {
+  font-size: 26rpx;
+  color: #C41E3A;
+  font-weight: 600;
 }
 
-.admin-info {
-  display: flex;
-  flex-direction: column;
+.chat-content {
+  flex: 1;
 }
 
-.admin-name {
+.chat-name {
+  font-size: 28rpx;
+  color: #333333;
+  font-weight: 500;
+  margin-bottom: 4rpx;
+}
+
+.chat-msg {
   font-size: 24rpx;
-  color: #f5f5f5;
+  color: #999999;
 }
 
-.admin-role {
-  font-size: 20rpx;
-  color: #f6c342;
+.chat-time {
+  font-size: 22rpx;
+  color: #CCCCCC;
 }
 
 /* 活动列表 */
 .activity-list {
   display: flex;
   flex-direction: column;
-  gap: 12rpx;
+  gap: 16rpx;
 }
 
 .activity-item {
   display: flex;
   align-items: center;
-  padding: 20rpx;
-  background-color: #2a2a3e;
-  border-radius: 16rpx;
+  gap: 16rpx;
+  padding: 16rpx;
+  background-color: #FAFAFA;
+  border-radius: 12rpx;
 }
 
-.activity-date {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 80rpx;
-  margin-right: 20rpx;
+.activity-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
-.date-day {
-  font-size: 32rpx;
-  font-weight: 700;
-  color: #f6c342;
+.activity-dot.active {
+  background-color: #4CAF50;
 }
 
-.date-month {
-  font-size: 20rpx;
-  color: #6b6b80;
+.activity-dot.upcoming {
+  background-color: #FF9800;
+}
+
+.activity-dot.done {
+  background-color: #CCCCCC;
 }
 
 .activity-info {
@@ -386,93 +374,58 @@ function handleJoin() {
 }
 
 .activity-title {
-  font-size: 26rpx;
-  color: #f5f5f5;
+  font-size: 28rpx;
+  color: #333333;
   font-weight: 500;
-  margin-bottom: 4rpx;
 }
 
 .activity-desc {
-  font-size: 22rpx;
-  color: #6b6b80;
+  font-size: 24rpx;
+  color: #999999;
+  margin-top: 4rpx;
 }
 
-.activity-status {
-  padding: 6rpx 14rpx;
-  border-radius: 8rpx;
-  flex-shrink: 0;
+/* 成员列表 */
+.member-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
 }
 
-.activity-status.enrolling {
-  background-color: rgba(16, 185, 129, 0.12);
-}
-
-.activity-status.upcoming {
-  background-color: rgba(59, 130, 246, 0.12);
-}
-
-.activity-status.preparing {
-  background-color: rgba(246, 195, 66, 0.12);
-}
-
-.activity-status.finished {
-  background-color: rgba(107, 107, 128, 0.12);
-}
-
-.status-text {
-  font-size: 20rpx;
-  color: #10b981;
-}
-
-.activity-status.upcoming .status-text {
-  color: #3b82f6;
-}
-
-.activity-status.preparing .status-text {
-  color: #f6c342;
-}
-
-.activity-status.finished .status-text {
-  color: #6b6b80;
-}
-
-/* 成员预览 */
-.member-preview {
+.member-item {
   display: flex;
   align-items: center;
+  gap: 16rpx;
 }
 
 .member-avatar {
-  width: 56rpx;
-  height: 56rpx;
-  background: linear-gradient(135deg, #3a3a50 0%, #2a2a3e 100%);
+  width: 64rpx;
+  height: 64rpx;
   border-radius: 50%;
+  background-color: #FFF0F0;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: -10rpx;
-  border: 2rpx solid #1a1a2e;
 }
 
-.member-text {
+.member-char {
+  font-size: 24rpx;
+  color: #C41E3A;
+  font-weight: 600;
+}
+
+.member-info {
+  flex: 1;
+}
+
+.member-name {
+  font-size: 28rpx;
+  color: #333333;
+}
+
+.member-role {
   font-size: 22rpx;
-  color: #f5f5f5;
-}
-
-.member-more {
-  width: 56rpx;
-  height: 56rpx;
-  background-color: #3a3a50;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 8rpx;
-}
-
-.more-text {
-  font-size: 18rpx;
-  color: #b0b0c0;
+  color: #999999;
 }
 
 /* 底部操作 */
@@ -481,44 +434,22 @@ function handleJoin() {
   bottom: 0;
   left: 0;
   right: 0;
-  display: flex;
-  gap: 16rpx;
-  padding: 20rpx 32rpx;
+  padding: 20rpx 24rpx;
   padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
-  background-color: #1a1a2e;
-  border-top: 1rpx solid #3a3a50;
+  background-color: #FFFFFF;
+  border-top: 1rpx solid #F0F0F0;
 }
 
-.chat-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8rpx;
-  padding: 24rpx 32rpx;
-  border: 1rpx solid rgba(246, 195, 66, 0.5);
-  border-radius: 16rpx;
-}
-
-.chat-icon {
-  font-size: 28rpx;
-}
-
-.chat-text {
-  font-size: 26rpx;
-  color: #f6c342;
-}
-
-.action-btn {
-  flex: 1;
-  background: linear-gradient(135deg, #f6c342 0%, #d4a537 100%);
-  border-radius: 16rpx;
+.apply-btn {
+  background-color: #C41E3A;
+  border-radius: 40rpx;
   padding: 24rpx;
   text-align: center;
 }
 
-.action-text {
+.apply-text {
   font-size: 30rpx;
-  color: #1a1a2e;
-  font-weight: 700;
+  color: #FFFFFF;
+  font-weight: 600;
 }
 </style>
