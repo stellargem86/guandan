@@ -1118,13 +1118,13 @@ export function useRankings() {
 
 *For any* user who already has an active registration for an event, subsequent registration attempts for the same event SHALL be rejected.
 
-**Validates: Requirement 6.7**
+**Validates: Requirements 6.7**
 
 ### Property 13: 约局满员状态转换
 
 *For any* match where currentPlayers equals maxPlayers (4), the match status SHALL be 'full' and additional join requests SHALL be rejected.
 
-**Validates: Requirement 4.4**
+**Validates: Requirements 4.4**
 
 ### Property 14: 支付回调幂等性
 
@@ -1136,7 +1136,7 @@ export function useRankings() {
 
 *For any* valid phone number displayed to users, the system SHALL mask middle digits (showing only first 3 and last 4 digits).
 
-**Validates: Requirement 15.6**
+**Validates: Requirements 15.6**
 
 ### Property 16: XSS 内容过滤
 
