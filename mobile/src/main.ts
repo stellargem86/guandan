@@ -1,4 +1,5 @@
 import './pages-json-js'
+import './styles/global.scss'
 // @ts-ignore
 import { plugin as __plugin } from '@dcloudio/uni-h5'
 import { createSSRApp as createVueApp } from 'vue'
